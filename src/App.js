@@ -1,7 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Link, Switch, Redirect} from "react-router-dom";
 import Login from './components/Login.jsx'
-import logo from './logo.svg';
 import './App.css';
 
 class App extends React.Component {
