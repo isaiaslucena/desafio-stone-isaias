@@ -1,19 +1,41 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {BrowserRouter as Router, Route, Link, Switch, Redirect} from "react-router-dom";
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <Router>
-      <div>
-        <Header />
+class App extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			loggedIn: true,
+			userName: "Unkown User"
+		}
+  }
 
-        <Route exact path="/" component={DefaultHome} />
-        <Route path="/about" component={About} />
-        <Route path="/topics" component={Topics} />
-      </div>
-    </Router>
+  render() {
+    return (
+      <Router>
+        <div>
+          <Switch>
+            <Route exact path="/" component={DefaultHome} />
+            <Route path="/login" component={Login} />
+            <Route path="/about" component={About} />
+            <Route path="/topics" component={Topics} />
+            <Route render={props => <NotFound state={this.state} />}/>
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
+}
+
+function NotFound(props) {
+  return (
+    props.state.loggedIn ? (
+      <Redirect to="/"/>
+    ) : (
+      <Redirect to="/login"/>
+    )
   );
 }
 
@@ -52,6 +74,10 @@ function Header() {
       </li>
     </ul>
   );
+}
+
+function Login() {
+  return <h3>Login Test Route</h3>
 }
 
 function About() {
