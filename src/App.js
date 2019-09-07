@@ -7,7 +7,7 @@ class App extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			loggedIn: true,
+			loggedIn: false,
 			userName: "Unkown User"
 		}
   }
@@ -17,7 +17,7 @@ class App extends React.Component {
       <Router>
         <div>
           <Switch>
-            <Route exact path="/" component={DefaultHome} />
+            <Route exact path="/" component={Login} />
             <Route path="/login" component={Login} />
             <Route path="/about" component={About} />
             <Route path="/topics" component={Topics} />
@@ -58,22 +58,6 @@ function DefaultHome() {
       </header>
     </div>
   )
-}
-
-function Header() {
-  return (
-    <ul>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/about">About</Link>
-      </li>
-      <li>
-        <Link to="/topics">Topics</Link>
-      </li>
-    </ul>
-  );
 }
 
 function Login() {
