@@ -12,7 +12,8 @@
 
 .login-form {
   width: 100%;
-  margin-top: 2%;
+  margin-top: 10px;
+  margin-bottom: 25px;
 }
 
 .login-submitbtn {
@@ -22,4 +23,13 @@
 
 .login-socialbtn {
   margin: 5px;
+}
+
+.login-link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.login-googlebtn {
+  margin-top: 25px;
 }
