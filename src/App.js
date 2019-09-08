@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Link, Switch, Redirect} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
 import Login from './components/Login.jsx'
 import './App.css';
 
@@ -17,10 +17,10 @@ class App extends React.Component {
       <Router>
         <div>
           <Switch>
-            <Route exact path="/" component={Login} />
-            <Route path="/login" component={Login} />
-            <Route path="/about" component={About} />
-            <Route path="/topics" component={Topics} />
+            <Route exact path="/" render={props => <NotFound state={this.state} />} />
+            <Route path="/login" render={props => <Login state={this.state} isSignIn={true} btntxt="Sign in" />}/>
+            <Route path="/forgot" component={Forgot} />
+            <Route path="/signup" render={props => <Login state={this.state} isSignIn={false} btntxt="Sign up" />} />
             <Route render={props => <NotFound state={this.state} />}/>
           </Switch>
         </div>
@@ -32,19 +32,19 @@ class App extends React.Component {
 function NotFound(props) {
   return (
     props.state.loggedIn ? (
-      <Redirect to="/"/>
+      <Content />
     ) : (
       <Redirect to="/login"/>
     )
   );
 }
 
-function About() {
-  return <h3>About Test Route</h3>
+function Content() {
+  return <h3>Content Route</h3>
 }
 
-function Topics() {
-  return <h3>Topics Test Route</h3>
+function Forgot() {
+  return <h3>Forgot Password Route</h3>
 }
 
 export default App;
