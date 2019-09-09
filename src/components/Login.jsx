@@ -11,8 +11,45 @@ import Divider from '@material-ui/core/Divider';
 import Checkbox from '@material-ui/core/Checkbox';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {Link as LinkRouter} from "react-router-dom";
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+
+const firebaseConfig = require('../firebase-config.json').result;
+
+var provider = new firebase.auth.GoogleAuthProvider();
+provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+
 
 class Login extends React.Component {
+	constructor(props) {
+		super(props)
+		this.GoogleLoginClick = this.GoogleLoginClick.bind(this);
+	}
+
+	GoogleLoginClick() {
+		console.log('clicked on login with google')
+		// this.setState(state => ({
+		// 	isToggleOn: !state.isToggleOn
+		// }));
+		firebase.auth().signInWithPopup(provider).then(function(result) {
+			// This gives you a Google Access Token. You can use it to access the Google API.
+			var token = result.credential.accessToken;
+			// The signed-in user info.
+			var user = result.user;
+			// ...
+		  }).catch(function(error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			// The email of the user's account used.
+			var email = error.email;
+			// The firebase.auth.AuthCredential type that was used.
+			var credential = error.credential;
+			// ...
+		  });
+	}
+
 	render() {
 		const isSignIn = this.props.isSignIn;
 		let rememberme, forgotAndsignup;
@@ -58,7 +95,7 @@ class Login extends React.Component {
 				</div>
 				<Divider />
 				<div className="login-googlebtn">
-					<Button type="button" fullWidth variant="contained" color="primary">
+					<Button type="button" fullWidth variant="contained" color="primary" onClick={this.GoogleLoginClick}>
 						{this.props.btntxt} with Google
 					</Button>
 				</div>

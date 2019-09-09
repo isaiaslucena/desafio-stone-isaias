@@ -2,16 +2,36 @@ import React from 'react';
 import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
 import Login from './components/Login.jsx'
 import './App.css';
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+
+const firebaseConfig = require('./firebase-config.json').result;
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+
+var provider = new firebase.auth.GoogleAuthProvider();
+provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
 class App extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			loggedIn: false,
+      loggedIn: false,
+      gSignedIn: false,
 			userName: "Unkown User"
 		}
   }
 
+  componentWillUnmount() {
+    this.unregisterAuthObserver();
+  }
+
+  componentDidMount() {
+    this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
+      this.setState({gSignedIn: !!user});
+      console.log(this.state);
+    });
+  }
   render() {
     return (
       <Router>
@@ -27,6 +47,25 @@ class App extends React.Component {
       </Router>
     );
   }
+}
+
+function SignInWithGoogle() {
+  firebase.auth().signInWithPopup(provider).then(function(result) {
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    var token = result.credential.accessToken;
+    // The signed-in user info.
+    var user = result.user;
+    // ...
+  }).catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // The email of the user's account used.
+    var email = error.email;
+    // The firebase.auth.AuthCredential type that was used.
+    var credential = error.credential;
+    // ...
+  });
 }
 
 function NotFound(props) {
