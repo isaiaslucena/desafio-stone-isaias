@@ -18,7 +18,9 @@ class App extends React.Component {
 		this.state = {
       loggedIn: false,
       gSignedIn: false,
-			userName: "Unkown User"
+      userName: "",
+      userEmail: "",
+      userImg: ""
 		}
   }
 
@@ -29,9 +31,27 @@ class App extends React.Component {
   componentDidMount() {
     this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
       this.setState({gSignedIn: !!user});
+      if (this.state.gSignedIn) {
+        this.setState({
+          userName: user.displayName,
+          userEmail: user.email,
+          userImg: user.photoURL,
+          loggedIn: true
+        });
+      } else {
+        this.setState({
+          userName: "",
+          userEmail: "",
+          userImg: "",
+          loggedIn: false
+        });
+      }
+
+      console.log(user);
       console.log(this.state);
     });
   }
+
   render() {
     return (
       <Router>
@@ -49,26 +69,8 @@ class App extends React.Component {
   }
 }
 
-function SignInWithGoogle() {
-  firebase.auth().signInWithPopup(provider).then(function(result) {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    var token = result.credential.accessToken;
-    // The signed-in user info.
-    var user = result.user;
-    // ...
-  }).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // The email of the user's account used.
-    var email = error.email;
-    // The firebase.auth.AuthCredential type that was used.
-    var credential = error.credential;
-    // ...
-  });
-}
-
 function NotFound(props) {
+  console.log(props);
   return (
     props.state.loggedIn ? (
       <Content />
