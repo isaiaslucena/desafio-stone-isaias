@@ -46,9 +46,6 @@ class App extends React.Component {
           loggedIn: false
         });
       }
-
-      console.log(user);
-      console.log(this.state);
     });
   }
 
@@ -57,7 +54,7 @@ class App extends React.Component {
       <Router>
         <div>
           <Switch>
-            <Route exact path="/" render={props => <NotFound state={this.state} />} />
+            <Route exact path="/" render={props => <RootPath state={this.state} />} />
             <Route path="/login" render={props => <Login state={this.state} isSignIn={true} btntxt="Sign in" />}/>
             <Route path="/forgot" component={Forgot} />
             <Route path="/signup" render={props => <Login state={this.state} isSignIn={false} btntxt="Sign up" />} />
@@ -69,19 +66,27 @@ class App extends React.Component {
   }
 }
 
+function RootPath(props) {
+  console.log("RootPath");
+  console.log(props);
+  return (
+    props.state.loggedIn ? (
+      <h1>Content Root Path</h1>
+    ) : (
+      <Redirect to="/login" />
+    )
+  )
+}
+
 function NotFound(props) {
   console.log(props);
   return (
     props.state.loggedIn ? (
-      <Content />
+      <RootPath />
     ) : (
-      <Redirect to="/login"/>
+      <Redirect to="/login" />
     )
   );
-}
-
-function Content() {
-  return <h3>Content Route</h3>
 }
 
 function Forgot() {
