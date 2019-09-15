@@ -1,7 +1,7 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
 import SignIn from './components/SignIn.jsx'
+import Content from './components/Content.jsx'
 import './App.css';
 import * as firebase from "firebase/app";
 import "firebase/auth";
@@ -61,7 +61,7 @@ class App extends React.Component {
 			<Router>
 				<div>
 					<Switch>
-						<Route exact path="/" render={props => <RootPath state={this.state} />} />
+						<Route exact path="/" render={props => <Content state={this.state} />} />
 						<Route path="/signin" render={props => <SignIn state={this.state} isSignIn={true} btntxt="Sign in" />}/>
 						<Route path="/forgot" component={Forgot} />
 						<Route path="/signup" render={props => <SignIn state={this.state} isSignIn={false} btntxt="Sign up" />} />
@@ -73,44 +73,11 @@ class App extends React.Component {
 	}
 }
 
-class RootPath extends React.Component {
-	constructor(props) {
-		super(props)
-		this.SignOutClick = this.SignOutClick.bind(this);
-	}
-
-	SignOutClick() {
-		firebase.auth().signOut().then(function() {
-			// Sign-out successful.
-			console.log('signned out sucessfuly!');
-		}).catch(function(error) {
-			// An error happened.
-			console.log(error);
-		});
-	}
-
-	render() {
-		return (
-			this.props.state.loggedIn ? (
-				<div>
-					<h1>Welcome {this.props.state.userName}</h1>
-					<h3>Content Root Path</h3>
-					<Button type="button" variant="contained" color="primary" onClick={this.SignOutClick}>
-						Sign Out
-					</Button>
-				</div>
-			) : (
-				<Redirect to="/signin" />
-			)
-		)
-	}
-}
-
 function NotFound(props) {
 	console.log(props);
 	return (
 		props.state.loggedIn ? (
-			<RootPath />
+			<Content />
 		) : (
 			<Redirect to="/signin" />
 		)
@@ -118,7 +85,7 @@ function NotFound(props) {
 }
 
 function Forgot() {
-	return <h1>Forgot Password Route</h1>
+	return <h3>Forgot Password Route</h3>
 }
 
 export default App;
