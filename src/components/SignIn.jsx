@@ -15,25 +15,24 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
-const firebaseConfig = require('../firebase-config.json').result;
-
 var provider = new firebase.auth.GoogleAuthProvider();
 provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-
 
 class Login extends React.Component {
 	constructor(props) {
 		super(props)
 		this.GoogleLoginClick = this.GoogleLoginClick.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	GoogleLoginClick() {
 		firebase.auth().signInWithPopup(provider).then(function(result) {
 			// This gives you a Google Access Token. You can use it to access the Google API.
 			var token = result.credential.accessToken;
+			console.log(token);
 			// The signed-in user info.
 			var user = result.user;
-		  }).catch(function(error) {
+		}).catch(function(error) {
 			// Handle Errors here.
 			var errorCode = error.code;
 			var errorMessage = error.message;
@@ -41,8 +40,17 @@ class Login extends React.Component {
 			var email = error.email;
 			// The firebase.auth.AuthCredential type that was used.
 			var credential = error.credential;
-			// ...
-		  });
+		});
+	}
+
+	handleSubmit(event) {
+		event.preventDefault();
+		console.log(event);
+		// firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+		// 	// Handle Errors here.
+		// 	var errorCode = error.code;
+		// 	var errorMessage = error.message;
+		// });
 	}
 
 	render() {
@@ -52,18 +60,20 @@ class Login extends React.Component {
 
 		if (isSignIn) {
 			rememberme = <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />;
-			forgotAndsignup = (<Grid container>
-								<Grid item xs>
-									<LinkRouter className="login-link" to="/forgot">
-										Forgot password?
-									</LinkRouter>
-								</Grid>
-								<Grid item>
-									<LinkRouter className="login-link" to="/signup">
-										{"Don't have an account? Sign Up"}
-									</LinkRouter>
-								</Grid>
-							</Grid>);
+			forgotAndsignup = (
+				<Grid container>
+					<Grid item xs>
+						<LinkRouter className="login-link" to="/forgot">
+							Forgot password?
+						</LinkRouter>
+					</Grid>
+					<Grid item>
+						<LinkRouter className="login-link" to="/signup">
+							{"Don't have an account? Sign Up"}
+						</LinkRouter>
+					</Grid>
+				</Grid>
+			);
 		} else {
 			rememberme = null;
 			forgotAndsignup = null;
@@ -82,7 +92,7 @@ class Login extends React.Component {
 						<Typography component="h1" variant="h5">
 							{this.props.btntxt}
 						</Typography>
-						<form className="login-form" noValidate>
+						<form className="login-form" onSubmit={this.handleSubmit}>
 							<TextField required fullWidth id="email" name="email" label="Email" margin="normal"/>
 							<TextField required fullWidth id="password" name="password" type="password" label="Password" margin="normal" autoComplete="current-password"/>
 							{rememberme}
