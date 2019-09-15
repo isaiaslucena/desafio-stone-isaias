@@ -14,80 +14,80 @@ class App extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-      loggedIn: false,
-      gSignedIn: false,
-      userName: "",
-      userEmail: "",
-      userImg: "",
-      userId: null,
-      usergId: null
-    }
-  }
+			loggedIn: false,
+			gSignedIn: false,
+			userName: "",
+			userEmail: "",
+			userImg: "",
+			userId: null,
+			usergId: null
+		}
+	}
 
-  componentWillUnmount() {
-    this.unregisterAuthObserver();
-  }
+	componentWillUnmount() {
+		this.unregisterAuthObserver();
+	}
 
-  componentDidMount() {
-    this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
-      // console.log(user);
-      if (user) {
-        this.setState({
-          loggedIn: true,
-          gSignedIn: true,
-          userName: user.displayName,
-          userEmail: user.email,
-          userImg: user.photoURL,
-          usergId: user.uid,
-          gToken: user.refreshToken
-        });
-      } else {
-        this.setState({
-          loggedIn: false,
-          gSignedIn: false,
-          userName: "",
-          userEmail: "",
-          userImg: "",
-          userId: null,
-          usergId: null,
-          gToken: null
-        });
-      }
-    });
-  }
+	componentDidMount() {
+		this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
+			// console.log(user);
+			if (user) {
+				this.setState({
+					loggedIn: true,
+					gSignedIn: true,
+					userName: user.displayName,
+					userEmail: user.email,
+					userImg: user.photoURL,
+					usergId: user.uid,
+					gToken: user.refreshToken
+				});
+			} else {
+				this.setState({
+					loggedIn: false,
+					gSignedIn: false,
+					userName: "",
+					userEmail: "",
+					userImg: "",
+					userId: null,
+					usergId: null,
+					gToken: null
+				});
+			}
+		});
+	}
 
-  render() {
-    return (
-      <Router>
-        <div>
-          <Switch>
-            <Route exact path="/" render={props => <RootPath state={this.state} />} />
-            <Route path="/signin" render={props => <SignIn state={this.state} isSignIn={true} btntxt="Sign in" />}/>
-            <Route path="/forgot" component={Forgot} />
-            <Route path="/signup" render={props => <SignIn state={this.state} isSignIn={false} btntxt="Sign up" />} />
-            <Route render={props => <NotFound state={this.state} />}/>
-          </Switch>
-        </div>
-      </Router>
-    );
-  }
+	render() {
+		return (
+			<Router>
+				<div>
+					<Switch>
+						<Route exact path="/" render={props => <RootPath state={this.state} />} />
+						<Route path="/signin" render={props => <SignIn state={this.state} isSignIn={true} btntxt="Sign in" />}/>
+						<Route path="/forgot" component={Forgot} />
+						<Route path="/signup" render={props => <SignIn state={this.state} isSignIn={false} btntxt="Sign up" />} />
+						<Route render={props => <NotFound state={this.state} />}/>
+					</Switch>
+				</div>
+			</Router>
+		);
+	}
 }
 
 class RootPath extends React.Component {
 	constructor(props) {
-    super(props)
-    this.SignOutClick = this.SignOutClick.bind(this);
+		super(props)
+		this.SignOutClick = this.SignOutClick.bind(this);
 	}
 
-  SignOutClick() {
-    firebase.auth().signOut().then(function() {
-      // Sign-out successful.
-      console.log('signned out sucessfuly!');
-    }).catch(function(error) {
-      // An error happened.
-      console.log(error);
-    });
-  }
+	SignOutClick() {
+		firebase.auth().signOut().then(function() {
+			// Sign-out successful.
+			console.log('signned out sucessfuly!');
+		}).catch(function(error) {
+			// An error happened.
+			console.log(error);
+		});
+	}
 
 	render() {
 		return (
@@ -107,18 +107,18 @@ class RootPath extends React.Component {
 }
 
 function NotFound(props) {
-  console.log(props);
-  return (
-    props.state.loggedIn ? (
-      <RootPath />
-    ) : (
-      <Redirect to="/signin" />
-    )
-  );
+	console.log(props);
+	return (
+		props.state.loggedIn ? (
+			<RootPath />
+		) : (
+			<Redirect to="/signin" />
+		)
+	);
 }
 
 function Forgot() {
-  return <h1>Forgot Password Route</h1>
+	return <h1>Forgot Password Route</h1>
 }
 
 export default App;
