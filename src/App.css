@@ -33,3 +33,15 @@
 .login-googlebtn {
   margin-top: 25px;
 }
+
+.content-avatar {
+  width: 60px;
+}
+
+.content-tabnav {
+  width: 95%;
+}
+
+.content-pullright {
+  float: right;
+}

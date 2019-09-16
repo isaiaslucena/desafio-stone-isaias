@@ -20,7 +20,8 @@ class App extends React.Component {
 			userEmail: "",
 			userImg: "",
 			userId: null,
-			usergId: null
+			usergId: null,
+			userBalance: 100000.00
 		}
 	}
 
@@ -74,7 +75,7 @@ class App extends React.Component {
 }
 
 function NotFound(props) {
-	console.log(props);
+	// console.log(props);
 	return (
 		props.state.loggedIn ? (
 			<Content />
