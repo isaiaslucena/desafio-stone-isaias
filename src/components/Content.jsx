@@ -23,7 +23,9 @@ class Content extends React.Component {
     super(props)
     this.state = {
       value: 0,
-      index: 0
+      index: 0,
+			currencyBT: 0.0,
+			currencyBC: 0.0
     }
     this.SignOutClick = this.SignOutClick.bind(this);
     this.handleChange = this.handleChange.bind(this);

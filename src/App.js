@@ -24,9 +24,7 @@ class App extends React.Component {
 			userId: "",
 			userRS: 0.0,
 			userBT: 0.0,
-			userBC: 0.0,
-			currencyBT: 0.0,
-			currencyBC: 0.0
+			userBC: 0.0
 		}
 	}
 
