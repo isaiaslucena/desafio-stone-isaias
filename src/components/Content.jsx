@@ -16,38 +16,16 @@ import {Redirect} from "react-router-dom";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 
-import axios from 'axios';
-
 class Content extends React.Component {
 	constructor(props) {
     super(props)
     this.state = {
       value: 0,
-      index: 0,
-			currencyBT: 0.0,
-			currencyBC: 0.0
+      index: 0
     }
     this.SignOutClick = this.SignOutClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
 	}
-
-	componentDidMount() {
-    let tdate = new Date();
-    let tdow = tdate.getDate();
-    if (tdow !== 0) {
-      tdate.setDate(tdate.getDate()-2);
-    } else if (tdow !== 6) {
-      tdate.setDate(tdate.getDate()-1);
-    }
-    let tday = ("0" + tdate.getDate()).slice(-2);
-    let tmonth = ("0" + (tdate.getMonth() + 1)).slice(-2);
-    let tyear = tdate.getFullYear();
-    let todaydate = tmonth+"-"+tday+"-"+tyear;
-
-    axios.get("https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='"+todaydate+"'&$format=json&$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao").then((resp) => {
-      console.log(resp.data);
-    });
-  }
 
 	SignOutClick() {
 		firebase.auth().signOut().then(function() {
@@ -135,10 +113,10 @@ class Content extends React.Component {
                     Currency
                   </Typography>
                   <Typography variant="body2" component="p">
-                    {'Brita$'}
+                    {'Brita$ ' + this.props.state.currencyBT}
                   </Typography>
                   <Typography variant="body2" component="p">
-                    {'BTC'}
+                    {'BTC ' + this.props.state.currencyBC}
                   </Typography>
                 </CardContent>
                 {/* <CardActions>
