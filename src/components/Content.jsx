@@ -8,6 +8,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+// import CardActions from '@material-ui/core/CardActions';
 
 import {Redirect} from "react-router-dom";
 import * as firebase from "firebase/app";
@@ -40,58 +43,118 @@ class Content extends React.Component {
 	render() {
 		return (
 			this.props.state.loggedIn ? (
-				<Grid container spacing={3}>
-          <Grid item xs={6}>
-            <Button type="button" variant="contained" color="primary" onClick={this.SignOutClick}>
-              Sign Out
-            </Button>
+        <div>
+          <Grid container justify="space-between" direction="row" spacing={3}>
+            <Grid item xs={4}>
+              <Chip avatar={<Avatar src={this.props.state.userImg} />} label={this.props.state.userName} />
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="h4" component="h4" className="content-textcenter">
+                Virtual Wallet
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Button type="button" variant="contained" color="primary" className="content-pullright" onClick={this.SignOutClick}>
+                Sign Out
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <Typography variant="h5" component="h5">
-              Virtual Wallet
-            </Typography>
+          <Grid container direction="row" justify="center" spacing={3}>
+            <Grid item xs={6}>
+              <Card className="content-card">
+                <CardContent>
+                  {/* <Typography className="content-cardtitle" color="textSecondary" gutterBottom>
+                  </Typography> */}
+                  <Typography variant="caption" component="span" className="content-pullright">
+                      {new Date().toDateString()}
+                  </Typography>
+                  <Typography variant="h5" component="h5">
+                    Balance
+                  </Typography>
+                  {/* <Typography className="content-cardpos" color="textSecondary">
+                  </Typography> */}
+                  <Typography variant="h6" component="h6">
+                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(this.props.state.userRS)}
+                  </Typography>
+                  <Typography variant="body2" component="p">
+                    {
+                      new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+                      .formatToParts(this.props.state.userBT)
+                      .map(({type, value}) => {
+                        switch (type) {
+                          case 'currency': return 'Brita$';
+                          default : return value;
+                        }
+                      }).reduce((string, part) => string + part)
+                    }
+                  </Typography>
+                  <Typography variant="body2" component="p">
+                  {
+                      new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+                      .formatToParts(this.props.state.userBC)
+                      .map(({type, value}) => {
+                        switch (type) {
+                          case 'currency': return 'BTC';
+                          default : return value;
+                        }
+                      }).reduce((string, part) => string + part)
+                    }
+                  </Typography>
+                </CardContent>
+                {/* <CardActions>
+                <Button size="small">Learn More</Button>
+                </CardActions> */}
+              </Card>
+            </Grid>
+            <Grid item xs={6}>
+              <Card className="content-card">
+                <CardContent>
+                  <Typography variant="h5" component="h2">
+                    Currency
+                  </Typography>
+                  <Typography variant="body2" component="p">
+                    {'Brita$'}
+                  </Typography>
+                  <Typography variant="body2" component="p">
+                    {'BTC'}
+                  </Typography>
+                </CardContent>
+                {/* <CardActions>
+                <Button size="small">Learn More</Button>
+                </CardActions> */}
+              </Card>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <Chip avatar={<Avatar src={this.props.state.userImg} />} label={this.props.state.userName} />
-          </Grid>
-          <Grid item xs={6}>
-          <Typography variant="span" component="span" className="content-pullright">
-              {(new Date).toDateString()}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="h4" component="h4">
-              Balance: {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(this.props.state.userBalance)}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <AppBar position="static" color="default">
-            <Tabs
-              value={this.state.value}
-              onChange={this.handleChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="scrollable"
-              scrollButtons="auto"
-              aria-label="scrollable auto tabs"
-              >
-              <Tab label="Extrato" id="scrollable-auto-tab-1" aria-controls="scrollable-auto-tabpanel-1" />
-              <Tab label="Cotações" id="scrollable-auto-tab-2" aria-controls="scrollable-auto-tabpanel-2" />
-              <Tab label="Operações" id="scrollable-auto-tab-3" aria-controls="scrollable-auto-tabpanel-3" />
-            </Tabs>
-            </AppBar>
-            <TabPanel value={this.state.value} index={0}>
-              Item One
-            </TabPanel>
-            <TabPanel value={this.state.value} index={1}>
-              Item Two
-            </TabPanel>
-            <TabPanel value={this.state.value} index={2}>
-              Item Three
-            </TabPanel>
-          </Grid>
-				</Grid>
-			) : (
+          <Grid container direction="row" justify="center" spacing={3}>
+            <Grid item xs={12}>
+              <AppBar position="static" color="default">
+              <Tabs
+                value={this.state.value}
+                onChange={this.handleChange}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs"
+                >
+                <Tab label="Statement" id="scrollable-auto-tab-1" aria-controls="scrollable-auto-tabpanel-1" />
+                <Tab label="Currency" id="scrollable-auto-tab-2" aria-controls="scrollable-auto-tabpanel-2" />
+                <Tab label="Operações" id="scrollable-auto-tab-3" aria-controls="scrollable-auto-tabpanel-3" />
+              </Tabs>
+              </AppBar>
+              <TabPanel value={this.state.value} index={0}>
+                Item One
+              </TabPanel>
+              <TabPanel value={this.state.value} index={1}>
+                Item Two
+              </TabPanel>
+              <TabPanel value={this.state.value} index={2}>
+                Item Three
+              </TabPanel>
+            </Grid>
+				  </Grid>
+        </div>
+      ) : (
 				<Redirect to="/signin" />
 			)
 		)
