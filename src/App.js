@@ -46,7 +46,14 @@ class App extends React.Component {
 
 		axios.get("https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='"+todaydate+"'&$format=json&$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao").then((resp) => {
 			// console.log(resp.data);
-			this.setState({currencyBT: resp.data.value[0].cotacaoCompra});
+			this.setState({currencyBT: String(resp.data.value[0].cotacaoCompra.toFixed(2)).replace(".",",")});
+		});
+	}
+
+	getBCcurrency() {
+		axios.get("https://www.mercadobitcoin.net/api/BTC/ticker/").then((resp) => {
+			console.log(resp.data);
+			this.setState({currencyBC: String(parseFloat(resp.data.ticker.buy).toFixed(2)).replace(".",",")});
 		});
 	}
 
@@ -59,6 +66,7 @@ class App extends React.Component {
 		this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
 			if (user) {
 				this.getBTcurrency();
+				this.getBCcurrency();
 				this.setState({
 					loggedIn: true,
 					userName: user.displayName,
