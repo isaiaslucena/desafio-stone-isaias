@@ -13,6 +13,7 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 class App extends React.Component {
 	constructor(props) {
 		super(props)
+    this.fsUsersCol = firebase.firestore().collection('users');
 		this.state = {
 			loggedIn: false,
 			gSignedIn: false,
@@ -21,7 +22,11 @@ class App extends React.Component {
 			userImg: "",
 			userId: null,
 			usergId: null,
-			userBalance: 100000.00
+			userRS: 0.0,
+			userBT: 0.0,
+			userBC: 0.0,
+			currencyBT: 0.0,
+			currencyBC: 0.0
 		}
 	}
 
@@ -30,17 +35,39 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
+		//observer auth
 		this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
-			// console.log(user);
 			if (user) {
 				this.setState({
 					loggedIn: true,
-					gSignedIn: true,
 					userName: user.displayName,
 					userEmail: user.email,
 					userImg: user.photoURL,
 					usergId: user.uid,
 					gToken: user.refreshToken
+				});
+				//verify if user exists
+				this.fsUsersCol.where('userEmail','==',user.email).get().then((doc) => {
+					if (doc.empty) {
+						this.setState({
+							userRS: 100000.00,
+							userBT: 0.0,
+							userBC: 0.0
+						});
+						this.fsUsersCol.add(this.state).then(function(docAdded) {
+							console.log('user added to firestore');
+							console.log(docAdded);
+						});
+					} else {
+						this.fsUsersCol.doc(doc.docs[0].id).get().then((docGet) => {
+							const userData = docGet.data();
+							this.setState({
+								userRS: userData.userRS,
+								userBT: userData.userBT,
+								userBC: userData.userBC
+							});
+						});
+					}
 				});
 			} else {
 				this.setState({
@@ -51,7 +78,9 @@ class App extends React.Component {
 					userImg: "",
 					userId: null,
 					usergId: null,
-					gToken: null
+					userRS: 0.0,
+					userBT: 0.0,
+					userBC: 0.0
 				});
 			}
 		});
