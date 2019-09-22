@@ -1,7 +1,7 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
 import SignIn from './components/SignIn.jsx'
+import Content from './components/Content.jsx'
 import './App.css';
 import * as firebase from "firebase/app";
 import "firebase/auth";
@@ -13,112 +13,109 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 class App extends React.Component {
 	constructor(props) {
 		super(props)
+    this.fsUsersCol = firebase.firestore().collection('users');
 		this.state = {
-      loggedIn: false,
-      gSignedIn: false,
-      userName: "",
-      userEmail: "",
-      userImg: "",
-      userId: null,
-      usergId: null
-    }
-  }
-
-  componentWillUnmount() {
-    this.unregisterAuthObserver();
-  }
-
-  componentDidMount() {
-    this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
-      // console.log(user);
-      if (user) {
-        this.setState({
-          loggedIn: true,
-          gSignedIn: true,
-          userName: user.displayName,
-          userEmail: user.email,
-          userImg: user.photoURL,
-          usergId: user.uid,
-          gToken: user.refreshToken
-        });
-      } else {
-        this.setState({
-          loggedIn: false,
-          gSignedIn: false,
-          userName: "",
-          userEmail: "",
-          userImg: "",
-          userId: null,
-          usergId: null,
-          gToken: null
-        });
-      }
-    });
-  }
-
-  render() {
-    return (
-      <Router>
-        <div>
-          <Switch>
-            <Route exact path="/" render={props => <RootPath state={this.state} />} />
-            <Route path="/signin" render={props => <SignIn state={this.state} isSignIn={true} btntxt="Sign in" />}/>
-            <Route path="/forgot" component={Forgot} />
-            <Route path="/signup" render={props => <SignIn state={this.state} isSignIn={false} btntxt="Sign up" />} />
-            <Route render={props => <NotFound state={this.state} />}/>
-          </Switch>
-        </div>
-      </Router>
-    );
-  }
-}
-
-class RootPath extends React.Component {
-	constructor(props) {
-    super(props)
-    this.SignOutClick = this.SignOutClick.bind(this);
+			loggedIn: false,
+			gSignedIn: false,
+			gToken: "",
+			userName: "",
+			userEmail: "",
+			userImg: "",
+			userId: "",
+			userRS: 0.0,
+			userBT: 0.0,
+			userBC: 0.0,
+			currencyBT: 0.0,
+			currencyBC: 0.0
+		}
 	}
 
-  SignOutClick() {
-    firebase.auth().signOut().then(function() {
-      // Sign-out successful.
-      console.log('signned out sucessfuly!');
-    }).catch(function(error) {
-      // An error happened.
-      console.log(error);
-    });
-  }
+	componentWillUnmount() {
+		this.unregisterAuthObserver();
+	}
+
+	componentDidMount() {
+		//observer auth
+		this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
+			if (user) {
+				this.setState({
+					loggedIn: true,
+					userName: user.displayName,
+					userEmail: user.email,
+					userImg: user.photoURL,
+					userId: user.uid,
+					gToken: user.refreshToken
+				});
+				//verify if user exists
+				this.fsUsersCol.where('userEmail','==',user.email).get().then((doc) => {
+					if (doc.empty) {
+						this.setState({
+							userRS: 100000.00,
+							userBT: 0.0,
+							userBC: 0.0
+						});
+						this.fsUsersCol.add(this.state).then(function(docAdded) {
+							console.log('user added to firestore');
+							console.log(docAdded);
+						});
+					} else {
+						this.fsUsersCol.doc(doc.docs[0].id).get().then((docGet) => {
+							const userData = docGet.data();
+							this.setState({
+								userRS: userData.userRS,
+								userBT: userData.userBT,
+								userBC: userData.userBC
+							});
+						});
+					}
+				});
+			} else {
+				this.setState({
+					loggedIn: false,
+					gSignedIn: false,
+					userName: "",
+					userEmail: "",
+					userImg: "",
+					userId: null,
+					usergId: null,
+					userRS: 0.0,
+					userBT: 0.0,
+					userBC: 0.0
+				});
+			}
+		});
+	}
 
 	render() {
 		return (
-			this.props.state.loggedIn ? (
+			<Router>
 				<div>
-					<h1>Welcome {this.props.state.userName}</h1>
-					<h3>Content Root Path</h3>
-					<Button type="button" variant="contained" color="primary" onClick={this.SignOutClick}>
-						Sign Out
-					</Button>
+					<Switch>
+						<Route exact path="/" render={props => <Content state={this.state} />} />
+						<Route path="/signin" render={props => <SignIn state={this.state} isSignIn={true} btntxt="Sign in" />}/>
+						<Route path="/forgot" component={Forgot} />
+						<Route path="/signup" render={props => <SignIn state={this.state} isSignIn={false} btntxt="Sign up" />} />
+						<Route render={props => <NotFound state={this.state} />}/>
+					</Switch>
 				</div>
-			) : (
-				<Redirect to="/signin" />
-			)
-		)
+			</Router>
+		);
 	}
 }
 
 function NotFound(props) {
-  console.log(props);
-  return (
-    props.state.loggedIn ? (
-      <RootPath />
-    ) : (
-      <Redirect to="/signin" />
-    )
-  );
+	// console.log(props);
+	return (
+		props.state.loggedIn ? (
+			<Content />
+		) : (
+			<Redirect to="/signin" />
+		)
+	);
 }
 
 function Forgot() {
-  return <h1>Forgot Password Route</h1>
+	return <h3>Forgot Password Route</h3>
 }
 
 export default App;

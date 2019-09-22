@@ -1,3 +1,7 @@
+body {
+  overflow-x: hidden;
+}
+
 .login-div {
   margin-top: 60px;
   display: flex;
@@ -32,4 +36,37 @@
 
 .login-googlebtn {
   margin-top: 25px;
+}
+
+.content-avatar {
+  width: 60px;
+}
+
+.content-tabnav {
+  width: 95%;
+}
+
+.content-pullright {
+  float: right;
+}
+
+.content-pullleft {
+  float: left;
+}
+
+.content-textcenter {
+  text-align: center;
+}
+.content-cardtitle {
+  font-size: 14px;
+}
+
+.content-cardpos {
+  margin-bottom: 12px;
+}
+
+.content-cardbullet {
+  display: inline-block;
+  margin: 0 2px;
+  transform: scale(0.8);
 }
