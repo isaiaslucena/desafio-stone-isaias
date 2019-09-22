@@ -17,11 +17,11 @@ class App extends React.Component {
 		this.state = {
 			loggedIn: false,
 			gSignedIn: false,
+			gToken: "",
 			userName: "",
 			userEmail: "",
 			userImg: "",
-			userId: null,
-			usergId: null,
+			userId: "",
 			userRS: 0.0,
 			userBT: 0.0,
 			userBC: 0.0,
@@ -43,7 +43,7 @@ class App extends React.Component {
 					userName: user.displayName,
 					userEmail: user.email,
 					userImg: user.photoURL,
-					usergId: user.uid,
+					userId: user.uid,
 					gToken: user.refreshToken
 				});
 				//verify if user exists
