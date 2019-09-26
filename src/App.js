@@ -26,17 +26,19 @@ class App extends React.Component {
 			userRS: 0.0,
 			userBT: 0.0,
 			userBC: 0.0,
-			currencyBT: 0,
-			currencyBC: 0
+			currencyBT: {buy: 0, sell: 0},
+			currencyBC: {buy: 0, sell: 0}
 		}
 	}
 
 	getBTcurrency() {
 		let tdate = new Date();
 		let tdow = tdate.getDate();
-		if (tdow !== 0) {
+		//check if today is sunday
+		if (tdow === 0) {
 			tdate.setDate(tdate.getDate()-2);
-		} else if (tdow !== 6) {
+		//chekc if today is saturday
+		} else if (tdow === 6) {
 			tdate.setDate(tdate.getDate()-1);
 		}
 		let tday = ("0" + tdate.getDate()).slice(-2);
@@ -46,14 +48,24 @@ class App extends React.Component {
 
 		axios.get("https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='"+todaydate+"'&$format=json&$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao").then((resp) => {
 			// console.log(resp.data);
-			this.setState({currencyBT: String(resp.data.value[0].cotacaoCompra.toFixed(2)).replace(".",",")});
+			this.setState({
+				currencyBT: {
+					buy: String(resp.data.value[0].cotacaoCompra.toFixed(2)).replace(".",","),
+					sell: String(resp.data.value[0].cotacaoVenda.toFixed(2)).replace(".",",")
+				}
+			});
 		});
 	}
 
 	getBCcurrency() {
 		axios.get("https://www.mercadobitcoin.net/api/BTC/ticker/").then((resp) => {
-			console.log(resp.data);
-			this.setState({currencyBC: String(parseFloat(resp.data.ticker.buy).toFixed(2)).replace(".",",")});
+			// console.log(resp.data);
+			this.setState({
+				currencyBC: {
+					buy: String(parseFloat(resp.data.ticker.buy).toFixed(2)).replace(".",","),
+					sell: String(parseFloat(resp.data.ticker.sell).toFixed(2)).replace(".",",")
+				}
+			});
 		});
 	}
 
