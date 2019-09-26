@@ -109,15 +109,33 @@ class Content extends React.Component {
             <Grid item xs={6}>
               <Card className="content-card">
                 <CardContent>
-                  <Typography variant="h5" component="h2">
-                    Currency
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    {'Brita$ ' + this.props.state.currencyBT}
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    {'BTC ' + this.props.state.currencyBC}
-                  </Typography>
+                  <Grid container direction="row" spacing={2}>
+                    <Grid item xs={12}>
+                      <Typography variant="h5" component="h2">
+                        Currency
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid container direction="row" spacing={2}>
+                    <Grid item xs={6}>
+                      <Typography variant="body1" component="p">Buy</Typography>
+                      <Typography variant="body2" component="p">
+                        {'Brita$ ' + this.props.state.currencyBT.buy}
+                      </Typography>
+                      <Typography variant="body2" component="p">
+                        {'BTC ' + this.props.state.currencyBC.buy}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="body1" component="p">Sell</Typography>
+                      <Typography variant="body2" component="p">
+                        {'Brita$ ' + this.props.state.currencyBT.sell}
+                      </Typography>
+                      <Typography variant="body2" component="p">
+                        {'BTC ' + this.props.state.currencyBC.sell}
+                      </Typography>
+                    </Grid>
+                  </Grid>
                 </CardContent>
                 {/* <CardActions>
                 <Button size="small">Learn More</Button>
