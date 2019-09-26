@@ -37,7 +37,7 @@ class App extends React.Component {
 		//check if today is sunday
 		if (tdow === 0) {
 			tdate.setDate(tdate.getDate()-2);
-		//chekc if today is saturday
+		//check if today is saturday
 		} else if (tdow === 6) {
 			tdate.setDate(tdate.getDate()-1);
 		}
