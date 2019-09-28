@@ -157,7 +157,7 @@ class Content extends React.Component {
                 >
                 <Tab label="Statement" id="scrollable-auto-tab-1" aria-controls="scrollable-auto-tabpanel-1" />
                 <Tab label="Currency" id="scrollable-auto-tab-2" aria-controls="scrollable-auto-tabpanel-2" />
-                <Tab label="Operações" id="scrollable-auto-tab-3" aria-controls="scrollable-auto-tabpanel-3" />
+                <Tab label="Operations" id="scrollable-auto-tab-3" aria-controls="scrollable-auto-tabpanel-3" />
               </Tabs>
               </AppBar>
               <TabPanel value={this.state.value} index={0}>
