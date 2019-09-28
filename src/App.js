@@ -33,7 +33,7 @@ class App extends React.Component {
 
 	getBTcurrency() {
 		let tdate = new Date();
-		let tdow = tdate.getDate();
+		let tdow = tdate.getDay();
 		//check if today is sunday
 		if (tdow === 0) {
 			tdate.setDate(tdate.getDate()-2);
