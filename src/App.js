@@ -6,6 +6,7 @@ import './App.css';
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import axios from 'axios';
 
 const firebaseConfig = require('./firebase-config.json').result;
 const firebaseApp = firebase.initializeApp(firebaseConfig);
@@ -25,9 +26,47 @@ class App extends React.Component {
 			userRS: 0.0,
 			userBT: 0.0,
 			userBC: 0.0,
-			currencyBT: 0.0,
-			currencyBC: 0.0
+			currencyBT: {buy: 0, sell: 0},
+			currencyBC: {buy: 0, sell: 0}
 		}
+	}
+
+	getBTcurrency() {
+		let tdate = new Date();
+		let tdow = tdate.getDay();
+		//check if today is sunday
+		if (tdow === 0) {
+			tdate.setDate(tdate.getDate()-2);
+		//check if today is saturday
+		} else if (tdow === 6) {
+			tdate.setDate(tdate.getDate()-1);
+		}
+		let tday = ("0" + tdate.getDate()).slice(-2);
+		let tmonth = ("0" + (tdate.getMonth() + 1)).slice(-2);
+		let tyear = tdate.getFullYear();
+		let todaydate = tmonth+"-"+tday+"-"+tyear;
+
+		axios.get("https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='"+todaydate+"'&$format=json&$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao").then((resp) => {
+			// console.log(resp.data);
+			this.setState({
+				currencyBT: {
+					buy: String(resp.data.value[0].cotacaoCompra.toFixed(2)).replace(".",","),
+					sell: String(resp.data.value[0].cotacaoVenda.toFixed(2)).replace(".",",")
+				}
+			});
+		});
+	}
+
+	getBCcurrency() {
+		axios.get("https://www.mercadobitcoin.net/api/BTC/ticker/").then((resp) => {
+			// console.log(resp.data);
+			this.setState({
+				currencyBC: {
+					buy: String(parseFloat(resp.data.ticker.buy).toFixed(2)).replace(".",","),
+					sell: String(parseFloat(resp.data.ticker.sell).toFixed(2)).replace(".",",")
+				}
+			});
+		});
 	}
 
 	componentWillUnmount() {
@@ -38,6 +77,8 @@ class App extends React.Component {
 		//observer auth
 		this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
 			if (user) {
+				this.getBTcurrency();
+				this.getBCcurrency();
 				this.setState({
 					loggedIn: true,
 					userName: user.displayName,
