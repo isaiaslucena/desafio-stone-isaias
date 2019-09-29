@@ -50,21 +50,21 @@ class App extends React.Component {
 			// console.log(resp.data);
 			this.setState({
 				currencyBT: {
-					buy: String(resp.data.value[0].cotacaoCompra.toFixed(2)).replace(".",","),
-					sell: String(resp.data.value[0].cotacaoVenda.toFixed(2)).replace(".",",")
+					buy: parseFloat(resp.data.value[0].cotacaoCompra),
+					sell: parseFloat(resp.data.value[0].cotacaoVenda)
 				}
 			});
-		});
-	}
 
-	getBCcurrency() {
-		axios.get("https://www.mercadobitcoin.net/api/BTC/ticker/").then((resp) => {
-			// console.log(resp.data);
-			this.setState({
-				currencyBC: {
-					buy: String(parseFloat(resp.data.ticker.buy).toFixed(2)).replace(".",","),
-					sell: String(parseFloat(resp.data.ticker.sell).toFixed(2)).replace(".",",")
-				}
+			axios.get("https://api.coindesk.com/v1/bpi/currentprice.json").then((resp) => {
+				// console.log(resp.data);
+				let BritaBC = resp.data.bpi.USD.rate_float;
+				let RSBC = BritaBC * this.state.currencyBT.buy;
+				this.setState({
+					currencyBC: {
+						buy: RSBC,
+						sell: RSBC
+					}
+				});
 			});
 		});
 	}
@@ -78,7 +78,6 @@ class App extends React.Component {
 		this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
 			if (user) {
 				this.getBTcurrency();
-				this.getBCcurrency();
 				this.setState({
 					loggedIn: true,
 					userName: user.displayName,
