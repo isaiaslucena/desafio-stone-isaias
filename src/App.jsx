@@ -1,7 +1,7 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
-import SignIn from './components/SignIn.jsx'
-import Content from './components/Content.jsx'
+import SignIn from './components/SignIn'
+import Content from './components/Content'
 import './App.css';
 import * as firebase from "firebase/app";
 import "firebase/auth";
@@ -27,6 +27,7 @@ class App extends React.Component {
 			userBT: 0.0,
 			userBC: 0.0,
 			currencyBT: {buy: 0, sell: 0},
+			currencyBTBC: {buy: 0, sell: 0},
 			currencyBC: {buy: 0, sell: 0}
 		}
 	}
@@ -60,6 +61,10 @@ class App extends React.Component {
 				let BritaBC = resp.data.bpi.USD.rate_float;
 				let RSBC = BritaBC * this.state.currencyBT.buy;
 				this.setState({
+					currencyBTBC: {
+						buy: BritaBC,
+						sell: BritaBC
+					},
 					currencyBC: {
 						buy: RSBC,
 						sell: RSBC
@@ -67,6 +72,10 @@ class App extends React.Component {
 				});
 			});
 		});
+	}
+
+	setUserRS = (newVal) => {
+		this.setState({userRS: newVal});
 	}
 
 	componentWillUnmount() {
@@ -131,7 +140,7 @@ class App extends React.Component {
 			<Router>
 				<div>
 					<Switch>
-						<Route exact path="/" render={props => <Content state={this.state} />} />
+						<Route exact path="/" render={props => <Content state={this.state} setuserrs={this.setUserRS}/>} />
 						<Route path="/signin" render={props => <SignIn state={this.state} isSignIn={true} btntxt="Sign in" />}/>
 						<Route path="/forgot" component={Forgot} />
 						<Route path="/signup" render={props => <SignIn state={this.state} isSignIn={false} btntxt="Sign up" />} />
