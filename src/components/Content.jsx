@@ -1,4 +1,6 @@
 import React from 'react';
+import {Redirect} from "react-router-dom";
+
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
@@ -10,13 +12,11 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-// import CardActions from '@material-ui/core/CardActions';
 
-import {Redirect} from "react-router-dom";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 
-import Operations from "./Operations.jsx"
+import Operations from "./Operations"
 
 class Content extends React.Component {
 	constructor(props) {
@@ -58,18 +58,10 @@ class Content extends React.Component {
     .formatToParts(BCval)
     .map(({type, value}) => {
       switch (type) {
-        case 'currency': return 'BTC';
+        case 'currency': return '฿TC';
         default : return value;
       }
     }).reduce((string, part) => string + part)
-  }
-
-  BuyBT(amount) {
-    //here is the buy brita$ op
-  }
-
-  BuyBC(amount) {
-    // here is the buy bitcoin op
   }
 
 	render() {
@@ -181,7 +173,7 @@ class Content extends React.Component {
                 Item Two
               </TabPanel>
                 <TabPanel value={this.state.value} index={2}>
-                  <Operations state={this.state}></Operations>
+                  <Operations state={this.props.state} setuserrs={this.props.setuserrs}></Operations>
                 </TabPanel>
             </Grid>
 				  </Grid>
