@@ -1,93 +1,143 @@
-import React from 'react';
+import React, {useState} from 'react';
+
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-
 import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
+import TextField from '@material-ui/core/TextField';
 
-class Operations extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      BuyBTClick: 0
+const useStyles = makeStyles(theme => ({
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200
+  },
+  menu: {
+    width: 200
+  },
+  button: {
+    marginTop: theme.spacing(3.2)
+  },
+}));
+
+const currencies = [
+  {
+    value: 'brita',
+    label: 'Brita$',
+  },
+  {
+    value: 'reais',
+    label: 'R$',
+  },
+  {
+    value: 'bitcoin',
+    label: '฿TC',
+  }
+];
+
+export default function Operations(props, ref) {
+  const classes = useStyles();
+  const pstate = props.state;
+
+  const [values, setValues] = useState({
+    SelectedBuy: "brita",
+    SelectedBuyWith: "reais",
+    BuyAmount: 0
+  });
+
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+
+  const BuyClick = event => {
+    if (values.SelectedBuy === values.SelectedBuyWith) {
+      alert('You cannot buy the same currency, select different one...');
+      setValues({
+        SelectedBuy: "brita",
+        SelectedBuyWith: "reais"
+      });
+    } else {
+      console.log(pstate);
+      // alert(`You want to buy ${values.BuyAmount} ${values.SelectedBuy} with ${values.SelectedBuyWith}`);
+
+      switch (values.SelectedBuy) {
+        case 'brita':
+          console.log('Want to buy brita');
+          if (values.SelectedBuyWith === 'reais') {
+            let boughtBT = parseFloat(values.BuyAmount) * pstate.currencyBT.buy;
+            if (boughtBT > pstate.userRS) {
+              alert(`You don't have enought balance to buy Brita$ ${boughtBT} !`);
+            } else {
+              let subRS = pstate.userRS - boughtBT;
+              props.setuserrs(subRS);
+            }
+          } else {
+            //ntd;
+          }
+          break;
+        case 'bitcoin':
+            console.log('Want to buy bitcoin');
+          break;
+        case 'reais':
+            console.log('Want to buy reais');
+          break;
+        default:
+          break;
+      }
     }
-
-    this.BuyRSClick = this.BuyRSClick.bind(this);
-    this.SellRSClick = this.SellRSClick.bind(this);
-    this.BuyBTClick = this.BuyBTClick.bind(this);
-    this.SellBTClick = this.SellBTClick.bind(this);
-    this.BuyBCClick = this.BuyBCClick.bind(this);
-    this.SellBCClick = this.SellBCClick.bind(this);
   }
 
-  BuyRSClick() {
-    //test
-  }
-
-  SellRSClick() {
-    //test
-  }
-
-  BuyBTClick(e) {
-    e.preventDefault();
-    console.log('clicked BuyBTClick');
-  }
-
-  SellBTClick() {
-    //test
-  }
-  BuyBCClick() {
-    //test
-  }
-
-  SellBCClick() {
-    //test
-  }
-
-  render() {
-    return (
-      <div>
-        <Grid container direction="row" spacing={3}>
-            <form className="login-form" onSubmit={this.BuyBTClick}>
-              <Grid item xs={4}>
-                <FormControl fullWidth className="">
-                  <InputLabel htmlFor="adornment-amount">Amount</InputLabel>
-                  <Input id="adornment-amount"
-                  startAdornment={<InputAdornment position="start">Brita$</InputAdornment>}/>
-                </FormControl>
-              </Grid>
-              <Grid item xs={3}>
-                <Button variant="contained" type="submit" color="primary" className="">Buy With R$</Button>
-              </Grid>
-              <Grid item xs={3}>
-              <Button variant="contained" type="submit" color="primary" className="">Buy With Bitcoin</Button>
-              </Grid>
-            </form>
-          </Grid>
-
-        <Grid container direction="row" justify="center" spacing={3}>
-          <Grid item xs={12}>
-            <form className="login-form" onSubmit={this.handleSubmit}>
-              <TextField required fullWidth id="email" name="email" label="Email" margin="normal"/>
-              <Button variant="contained" color="primary">Buy Bitcoin</Button>
-            </form>
-          </Grid>
+  return (
+    <div>
+      <Grid container direction="row" spacing={1}>
+        <Grid item xs={3}>
+          <TextField fullWidth select id="select-buy"
+            label="Buy" className={classes.textField}
+            margin="normal" value={values.SelectedBuy}
+            onChange={handleChange('SelectedBuy')}
+            SelectProps={{
+              MenuProps: {
+                className: classes.menu,
+              },
+            }}>
+            {currencies.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
-      </div>
-    )
-  }
+        <Grid item xs={3}>
+          <TextField fullWidth id="input-buyamount" label="Amount"
+          className={classes.textField}
+          value={values.BuyAmount}
+          onChange={handleChange('BuyAmount')}
+          margin="normal"></TextField>
+        </Grid>
+        <Grid item xs={3}>
+          <TextField fullWidth select id="select-buywith"
+              label="With" className={classes.textField}
+              margin="normal" value={values.SelectedBuyWith}
+              onChange={handleChange('SelectedBuyWith')}
+              SelectProps={{
+                MenuProps: {
+                  className: classes.menu,
+                },
+              }}>
+              {currencies.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+        </Grid>
+        <Grid item xs={3}>
+          <Button fullWidth variant="contained" color="primary"
+          className={classes.button} onClick={() => BuyClick(values.BuyAmount)}>
+            Buy
+          </Button>
+        </Grid>
+      </Grid>
+    </div>
+  )
 }
-
-export default Operations;
