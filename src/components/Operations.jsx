@@ -57,7 +57,7 @@ export default function Operations(props, ref) {
         SelectedBuyWith: "reais"
       });
     } else {
-      console.log(pstate);
+      // console.log(pstate);
       // alert(`You want to buy ${values.BuyAmount} ${values.SelectedBuy} with ${values.SelectedBuyWith}`);
 
       switch (values.SelectedBuy) {
