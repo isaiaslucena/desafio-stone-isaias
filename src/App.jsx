@@ -23,6 +23,7 @@ class App extends React.Component {
 			userEmail: "",
 			userImg: "",
 			userId: "",
+			userDocId: "",
 			userRS: 0.0,
 			userBT: 0.0,
 			userBC: 0.0,
@@ -74,8 +75,14 @@ class App extends React.Component {
 		});
 	}
 
+	setUserInfoFB = () => {
+		this.fsUsersCol.doc(this.state.userDocId).set(this.state);
+	}
+
 	setUserRS = (newVal) => {
 		this.setState({userRS: newVal});
+
+		this.setUserInfoFB();
 	}
 
 	componentWillUnmount() {
@@ -103,14 +110,19 @@ class App extends React.Component {
 							userBT: 0.0,
 							userBC: 0.0
 						});
-						this.fsUsersCol.add(this.state).then(function(docAdded) {
+						this.fsUsersCol.add(this.state).then((docAdded) => {
 							console.log('user added to firestore');
 							console.log(docAdded);
+							this.setState({userDocId: docAdded.id});
+							this.setUserInfoFB();
 						});
 					} else {
+						console.log('user exists on firestore');
+						console.log(doc);
 						this.fsUsersCol.doc(doc.docs[0].id).get().then((docGet) => {
 							const userData = docGet.data();
 							this.setState({
+								userDocId: doc.docs[0].id,
 								userRS: userData.userRS,
 								userBT: userData.userBT,
 								userBC: userData.userBC
