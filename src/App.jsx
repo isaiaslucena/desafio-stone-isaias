@@ -80,6 +80,55 @@ class App extends React.Component {
 		this.setState({[balanceStr]: newVal});
 	}
 
+	addStatement = (op) => {
+		let now = new Date();
+		let nyear = now.getFullYear();
+		let nmonth = ('0' + (now.getMonth()+1)).slice(-2);
+		let nday = ('0' + now.getDate()).slice(-2);
+		let isodate = nyear+'-'+nmonth+'-'+nday;
+
+		let nhour = ('0' + now.getHours()).slice(-2);
+		let nmin = ('0' + now.getMinutes()).slice(-2);
+		let nsec = ('0' + now.getSeconds()).slice(-2);
+		let tfourtime = nhour+':'+nmin+':'+nsec;
+
+		let searchdate = this.state.statement.map(function(item) { return item.date; }).indexOf(isodate);
+		if (searchdate === -1) {
+			console.log(`${isodate} not found`);
+
+			let fulllog = {
+				"date": isodate,
+				"log": [
+					{
+						"time": tfourtime,
+						"operation": op.type,
+						"amount": op.amount,
+						"currency": op.currency
+					}
+				],
+				"balance": {
+					"reais": this.state.userRS,
+					"brita": this.state.userBT,
+					"bitcoin": this.state.userBC
+				}
+			};
+			this.setState({statement: [ ...this.state.statement, fulllog]});
+		} else {
+			console.log(`${isodate} found`);
+
+			let nlog = {
+				"time": tfourtime,
+				"operation": op.type,
+				"amount": op.amount,
+				"currency": op.currency
+			};
+
+			const carray = [...this.state.statement];
+			carray[searchdate].log.push(nlog);
+			this.setState({statement: carray});
+		}
+	}
+
 	componentWillUnmount() {
 		this.unregisterAuthObserver();
 	}
@@ -119,7 +168,8 @@ class App extends React.Component {
 								userDocId: doc.docs[0].id,
 								userRS: userData.userRS,
 								userBT: userData.userBT,
-								userBC: userData.userBC
+								userBC: userData.userBC,
+								statement: userData.statement
 							});
 						});
 					}
@@ -152,7 +202,7 @@ class App extends React.Component {
 			<Router>
 				<div>
 					<Switch>
-						<Route exact path="/" render={props => <Content state={this.state} setuserbalance={this.setUserBalance}/>} />
+						<Route exact path="/" render={props => <Content state={this.state} setuserbalance={this.setUserBalance} addstatement={this.addStatement}/>} />
 						<Route path="/signin" render={props => <SignIn state={this.state} isSignIn={true} btntxt="Sign in" />}/>
 						<Route path="/forgot" component={Forgot} />
 						<Route path="/signup" render={props => <SignIn state={this.state} isSignIn={false} btntxt="Sign up" />} />
