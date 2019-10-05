@@ -7,16 +7,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(theme => ({
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200
-  },
-  menu: {
-    width: 200
-  },
   button: {
-    marginTop: theme.spacing(3.2)
+    marginTop: theme.spacing(3.6)
   },
 }));
 
@@ -49,41 +41,65 @@ export default function Operations(props, ref) {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const BuyClick = event => {
+  const BuyClick = () => {
     if (values.SelectedBuy === values.SelectedBuyWith) {
-      alert('You cannot buy the same currency, select different one...');
-      setValues({
-        SelectedBuy: "brita",
-        SelectedBuyWith: "reais"
-      });
+      alert('You cannot buy the same currency, select a different one...');
     } else {
       // console.log(pstate);
       // alert(`You want to buy ${values.BuyAmount} ${values.SelectedBuy} with ${values.SelectedBuyWith}`);
 
       switch (values.SelectedBuy) {
         case 'brita':
-          console.log('Want to buy brita');
+          console.log('Want to buy brita with '+values.SelectedBuyWith);
           if (values.SelectedBuyWith === 'reais') {
-            let boughtBT = parseFloat(values.BuyAmount) * pstate.currencyBT.buy;
-            if (boughtBT > pstate.userRS) {
-              alert(`You don't have enought balance to buy Brita$ ${boughtBT} !`);
-            } else {
-              let subRS = pstate.userRS - boughtBT;
-              props.setuserrs(subRS);
-            }
+            SubFromBalance(pstate.userRS, BuymCurrency(pstate.currencyBT.buy), 'userRS', pstate.userBT, 'userBT');
           } else {
-            //ntd;
+            SubFromBalance(pstate.userBC, BuydCurrency((1 / pstate.currencyBTBC.buy), 'userBC', pstate.userBT, 'userBT'));
           }
           break;
         case 'bitcoin':
-            console.log('Want to buy bitcoin');
+            console.log('Want to buy bitcoin with '+values.SelectedBuyWith);
+            if (values.SelectedBuyWith === 'reais') {
+              SubFromBalance(pstate.userRS, BuymCurrency(pstate.currencyBC.buy), 'userRS', pstate.userBC, 'userBC');
+            } else {
+              SubFromBalance(pstate.userBT, BuydCurrency(pstate.currencyBTBC.buy), 'userBT', pstate.userBC, 'userBC');
+            }
           break;
         case 'reais':
-            console.log('Want to buy reais');
+            console.log('Want to buy reais with '+values.SelectedBuyWith);
+            if (values.SelectedBuyWith === 'brita') {
+              SubFromBalance(pstate.userBT, BuymCurrency((1 / pstate.currencyBT.buy)), 'userBT', pstate.userRS, 'userRS');
+            } else {
+              SubFromBalance(pstate.userBC, BuymCurrency((1 / pstate.currencyBC.buy)), 'userBC', pstate.userRS, 'userRS');
+            }
           break;
         default:
+          alert('Unknown currency!');
           break;
       }
+    }
+  }
+
+  const BuymCurrency = (selC) => {
+    let final = parseFloat(values.BuyAmount) * selC;
+    console.log(`You bought ${values.BuyAmount} and spent ${final}`);
+    return final;
+  }
+
+  const BuydCurrency = (selC) => {
+    let final = parseFloat(values.BuyAmount) * selC
+    console.log(`You bought ${values.BuyAmount} and spent ${final}`);
+    return final;
+  }
+
+  const SubFromBalance = (balance, sub, balanceStr, balanceP, balanceStrP) => {
+    if (sub > balance) {
+      alert(`You don't have enought balance to buy ${sub} !`);
+    } else {
+      let final = balance - sub;
+      props.setuserbalance(balanceStr, final);
+      let finalp = parseInt(balanceP) + parseInt(values.BuyAmount);
+      props.setuserbalance(balanceStrP, finalp);
     }
   }
 
@@ -92,8 +108,8 @@ export default function Operations(props, ref) {
       <Grid container direction="row" spacing={1}>
         <Grid item xs={3}>
           <TextField fullWidth select id="select-buy"
-            label="Buy" className={classes.textField}
-            margin="normal" value={values.SelectedBuy}
+            label="Buy" margin="normal"
+            value={values.SelectedBuy}
             onChange={handleChange('SelectedBuy')}
             SelectProps={{
               MenuProps: {
@@ -108,16 +124,15 @@ export default function Operations(props, ref) {
           </TextField>
         </Grid>
         <Grid item xs={3}>
-          <TextField fullWidth id="input-buyamount" label="Amount"
-          className={classes.textField}
+          <TextField fullWidth id="input-buyamount"
+          label="Amount" margin="normal"
           value={values.BuyAmount}
-          onChange={handleChange('BuyAmount')}
-          margin="normal"></TextField>
+          onChange={handleChange('BuyAmount')}></TextField>
         </Grid>
         <Grid item xs={3}>
           <TextField fullWidth select id="select-buywith"
-              label="With" className={classes.textField}
-              margin="normal" value={values.SelectedBuyWith}
+              label="With" margin="normal"
+              value={values.SelectedBuyWith}
               onChange={handleChange('SelectedBuyWith')}
               SelectProps={{
                 MenuProps: {
@@ -132,8 +147,9 @@ export default function Operations(props, ref) {
             </TextField>
         </Grid>
         <Grid item xs={3}>
-          <Button fullWidth variant="contained" color="primary"
-          className={classes.button} onClick={() => BuyClick(values.BuyAmount)}>
+          <Button fullWidth className={classes.button}
+          variant="contained" color="primary"
+          onClick={() => BuyClick(values.BuyAmount)}>
             Buy
           </Button>
         </Grid>
