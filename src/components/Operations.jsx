@@ -45,12 +45,8 @@ export default function Operations(props, ref) {
     if (values.SelectedBuy === values.SelectedBuyWith) {
       alert('You cannot buy the same currency, select a different one...');
     } else {
-      // console.log(pstate);
-      // alert(`You want to buy ${values.BuyAmount} ${values.SelectedBuy} with ${values.SelectedBuyWith}`);
-
       switch (values.SelectedBuy) {
         case 'brita':
-          console.log('Want to buy brita with '+values.SelectedBuyWith);
           if (values.SelectedBuyWith === 'reais') {
             SubFromBalance(pstate.userRS, BuymCurrency(pstate.currencyBT.buy), 'userRS', pstate.userBT, 'userBT');
           } else {
@@ -58,7 +54,6 @@ export default function Operations(props, ref) {
           }
           break;
         case 'bitcoin':
-            console.log('Want to buy bitcoin with '+values.SelectedBuyWith);
             if (values.SelectedBuyWith === 'reais') {
               SubFromBalance(pstate.userRS, BuymCurrency(pstate.currencyBC.buy), 'userRS', pstate.userBC, 'userBC');
             } else {
@@ -66,7 +61,6 @@ export default function Operations(props, ref) {
             }
           break;
         case 'reais':
-            console.log('Want to buy reais with '+values.SelectedBuyWith);
             if (values.SelectedBuyWith === 'brita') {
               SubFromBalance(pstate.userBT, BuymCurrency((1 / pstate.currencyBT.buy)), 'userBT', pstate.userRS, 'userRS');
             } else {
@@ -82,13 +76,11 @@ export default function Operations(props, ref) {
 
   const BuymCurrency = (selC) => {
     let final = parseFloat(values.BuyAmount) * selC;
-    console.log(`You bought ${values.BuyAmount} and spent ${final}`);
     return final;
   }
 
   const BuydCurrency = (selC) => {
     let final = parseFloat(values.BuyAmount) * selC
-    console.log(`You bought ${values.BuyAmount} and spent ${final}`);
     return final;
   }
 
@@ -149,7 +141,7 @@ export default function Operations(props, ref) {
         <Grid item xs={3}>
           <Button fullWidth className={classes.button}
           variant="contained" color="primary"
-          onClick={() => BuyClick(values.BuyAmount)}>
+          onClick={() => BuyClick()}>
             Buy
           </Button>
         </Grid>
