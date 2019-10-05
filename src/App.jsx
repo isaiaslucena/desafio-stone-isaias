@@ -29,7 +29,8 @@ class App extends React.Component {
 			userBC: 0.0,
 			currencyBT: {buy: 0, sell: 0},
 			currencyBTBC: {buy: 0, sell: 0},
-			currencyBC: {buy: 0, sell: 0}
+			currencyBC: {buy: 0, sell: 0},
+			statement: []
 		}
 	}
 
@@ -75,8 +76,8 @@ class App extends React.Component {
 		});
 	}
 
-	setUserRS = (newVal) => {
-		this.setState({userRS: newVal});
+	setUserBalance = (balanceStr, newVal) => {
+		this.setState({[balanceStr]: newVal});
 	}
 
 	componentWillUnmount() {
@@ -108,11 +109,10 @@ class App extends React.Component {
 							console.log('user added to firestore');
 							console.log(docAdded);
 							this.setState({userDocId: docAdded.id});
-							this.setUserInfoFB();
 						});
 					} else {
 						console.log('user exists on firestore');
-						console.log(doc);
+						// console.log(doc);
 						this.fsUsersCol.doc(doc.docs[0].id).get().then((docGet) => {
 							const userData = docGet.data();
 							this.setState({
@@ -142,7 +142,7 @@ class App extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
-		if (this.state.userDocId.length > 0) {
+		if (this.state.loggedIn && this.state.userDocId.length > 0) {
 			this.fsUsersCol.doc(this.state.userDocId).set(this.state);
 		}
 	}
@@ -152,7 +152,7 @@ class App extends React.Component {
 			<Router>
 				<div>
 					<Switch>
-						<Route exact path="/" render={props => <Content state={this.state} setuserrs={this.setUserRS}/>} />
+						<Route exact path="/" render={props => <Content state={this.state} setuserbalance={this.setUserBalance}/>} />
 						<Route path="/signin" render={props => <SignIn state={this.state} isSignIn={true} btntxt="Sign in" />}/>
 						<Route path="/forgot" component={Forgot} />
 						<Route path="/signup" render={props => <SignIn state={this.state} isSignIn={false} btntxt="Sign up" />} />
