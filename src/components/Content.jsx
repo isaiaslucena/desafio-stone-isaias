@@ -173,7 +173,7 @@ class Content extends React.Component {
                 Item Two
               </TabPanel>
                 <TabPanel value={this.state.value} index={2}>
-                  <Operations state={this.props.state} setuserbalance={this.props.setuserbalance}></Operations>
+                  <Operations state={this.props.state} setuserbalance={this.props.setuserbalance} addstatement={this.props.addstatement}></Operations>
                 </TabPanel>
             </Grid>
 				  </Grid>
