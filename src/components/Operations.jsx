@@ -90,8 +90,21 @@ export default function Operations(props, ref) {
     } else {
       let final = balance - sub;
       props.setuserbalance(balanceStr, final);
+      let sublog = {
+        type: "debit",
+        amount: sub,
+        currency: values.SelectedBuyWith
+      }
+      props.addstatement(sublog);
+
       let finalp = parseInt(balanceP) + parseInt(values.BuyAmount);
       props.setuserbalance(balanceStrP, finalp);
+      let pluslog = {
+        type: "credit",
+        amount: parseInt(values.BuyAmount),
+        currency: values.SelectedBuy
+      }
+      props.addstatement(pluslog);
     }
   }
 
