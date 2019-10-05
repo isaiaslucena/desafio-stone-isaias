@@ -75,14 +75,8 @@ class App extends React.Component {
 		});
 	}
 
-	setUserInfoFB = () => {
-		this.fsUsersCol.doc(this.state.userDocId).set(this.state);
-	}
-
 	setUserRS = (newVal) => {
 		this.setState({userRS: newVal});
-
-		this.setUserInfoFB();
 	}
 
 	componentWillUnmount() {
@@ -147,6 +141,12 @@ class App extends React.Component {
 		});
 	}
 
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		if (this.state.userDocId.length > 0) {
+			this.fsUsersCol.doc(this.state.userDocId).set(this.state);
+		}
+	}
+
 	render() {
 		return (
 			<Router>
@@ -165,7 +165,6 @@ class App extends React.Component {
 }
 
 function NotFound(props) {
-	// console.log(props);
 	return (
 		props.state.loggedIn ? (
 			<Content />
