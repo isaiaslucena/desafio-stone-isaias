@@ -7,9 +7,30 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import axios from 'axios';
+import { openDB } from 'idb';
 
 const firebaseConfig = require('./firebase-config.json').result;
 const firebaseApp = firebase.initializeApp(firebaseConfig);
+
+async function idDB(userinfo) {
+  const db = await openDB('usersDB', 1, {
+    upgrade(db) {
+      db.createObjectStore('users', {
+        keyPath: 'userDocId',
+				autoIncrement: false,
+				unique: true
+      });
+    }
+  });
+
+	const exists = (await db.get('users', userinfo.userDocId)) || false;
+
+	if (exists) {
+		await db.put('users', userinfo);
+	} else {
+		await db.add('users', userinfo);
+	}
+}
 
 class App extends React.Component {
 	constructor(props) {
@@ -210,6 +231,8 @@ class App extends React.Component {
 	componentDidUpdate = () => {
 		if (this.state.loggedIn && this.state.userDocId.length > 0) {
 			this.fsUsersCol.doc(this.state.userDocId).set(this.state);
+
+			idDB(this.state);
 		}
 	}
 
