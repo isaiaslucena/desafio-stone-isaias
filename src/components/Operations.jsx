@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState} from "react";
 
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -14,16 +14,16 @@ const useStyles = makeStyles(theme => ({
 
 const currencies = [
   {
-    value: 'brita',
-    label: 'Brita$',
+    value: "brita",
+    label: "Brita$",
   },
   {
-    value: 'reais',
-    label: 'R$',
+    value: "reais",
+    label: "R$",
   },
   {
-    value: 'bitcoin',
-    label: '฿TC',
+    value: "bitcoin",
+    label: "฿TC",
   }
 ];
 
@@ -41,39 +41,6 @@ export default function Operations(props, ref) {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const BuyClick = () => {
-    if (values.SelectedBuy === values.SelectedBuyWith) {
-      alert('You cannot buy the same currency, select a different one...');
-    } else {
-      switch (values.SelectedBuy) {
-        case 'brita':
-          if (values.SelectedBuyWith === 'reais') {
-            SubFromBalance(pstate.userRS, BuymCurrency(pstate.currencyBT.buy), 'userRS', pstate.userBT, 'userBT');
-          } else {
-            SubFromBalance(pstate.userBC, BuydCurrency((1 / pstate.currencyBTBC.buy), 'userBC', pstate.userBT, 'userBT'));
-          }
-          break;
-        case 'bitcoin':
-            if (values.SelectedBuyWith === 'reais') {
-              SubFromBalance(pstate.userRS, BuymCurrency(pstate.currencyBC.buy), 'userRS', pstate.userBC, 'userBC');
-            } else {
-              SubFromBalance(pstate.userBT, BuydCurrency(pstate.currencyBTBC.buy), 'userBT', pstate.userBC, 'userBC');
-            }
-          break;
-        case 'reais':
-            if (values.SelectedBuyWith === 'brita') {
-              SubFromBalance(pstate.userBT, BuymCurrency((1 / pstate.currencyBT.buy)), 'userBT', pstate.userRS, 'userRS');
-            } else {
-              SubFromBalance(pstate.userBC, BuymCurrency((1 / pstate.currencyBC.buy)), 'userBC', pstate.userRS, 'userRS');
-            }
-          break;
-        default:
-          alert('Unknown currency!');
-          break;
-      }
-    }
-  }
-
   const BuymCurrency = (selC) => {
     let final = parseFloat(values.BuyAmount) * selC;
     return final;
@@ -84,9 +51,42 @@ export default function Operations(props, ref) {
     return final;
   }
 
+  const buyClick = () => {
+    if (values.SelectedBuy === values.SelectedBuyWith) {
+      alert("You cannot buy the same currency, select a different one...");
+    } else {
+      switch (values.SelectedBuy) {
+        case "brita":
+          if (values.SelectedBuyWith === "reais") {
+            SubFromBalance(pstate.userRS, BuymCurrency(pstate.currencyBT.buy), "userRS", pstate.userBT, "userBT");
+          } else {
+            SubFromBalance(pstate.userBC, BuydCurrency((1 / pstate.currencyBTBC.buy), "userBC", pstate.userBT, "userBT"));
+          }
+          break;
+        case "bitcoin":
+            if (values.SelectedBuyWith === "reais") {
+              SubFromBalance(pstate.userRS, BuymCurrency(pstate.currencyBC.buy), "userRS", pstate.userBC, "userBC");
+            } else {
+              SubFromBalance(pstate.userBT, BuydCurrency(pstate.currencyBTBC.buy), "userBT", pstate.userBC, "userBC");
+            }
+          break;
+        case "reais":
+            if (values.SelectedBuyWith === "brita") {
+              SubFromBalance(pstate.userBT, BuymCurrency((1 / pstate.currencyBT.buy)), "userBT", pstate.userRS, "userRS");
+            } else {
+              SubFromBalance(pstate.userBC, BuymCurrency((1 / pstate.currencyBC.buy)), "userBC", pstate.userRS, "userRS");
+            }
+          break;
+        default:
+          alert("Unknown currency!");
+          break;
+      }
+    }
+  }
+
   const SubFromBalance = (balance, sub, balanceStr, balanceP, balanceStrP) => {
     if (sub > balance) {
-      alert(`You don't have enought balance to buy ${sub} !`);
+      alert(`You don"t have enought balance to buy ${sub} !`);
     } else {
       let final = balance - sub;
       props.setuserbalance(balanceStr, final);
@@ -114,7 +114,7 @@ export default function Operations(props, ref) {
           <TextField fullWidth select id="select-buy"
             label="Buy" margin="normal"
             value={values.SelectedBuy}
-            onChange={handleChange('SelectedBuy')}
+            onChange={handleChange("SelectedBuy")}
             SelectProps={{
               MenuProps: {
                 className: classes.menu,
@@ -131,13 +131,13 @@ export default function Operations(props, ref) {
           <TextField fullWidth id="input-buyamount"
           label="Amount" margin="normal"
           value={values.BuyAmount}
-          onChange={handleChange('BuyAmount')}></TextField>
+          onChange={handleChange("BuyAmount")}></TextField>
         </Grid>
         <Grid item xs={3}>
           <TextField fullWidth select id="select-buywith"
               label="With" margin="normal"
               value={values.SelectedBuyWith}
-              onChange={handleChange('SelectedBuyWith')}
+              onChange={handleChange("SelectedBuyWith")}
               SelectProps={{
                 MenuProps: {
                   className: classes.menu,
@@ -153,7 +153,7 @@ export default function Operations(props, ref) {
         <Grid item xs={3}>
           <Button fullWidth className={classes.button}
           variant="contained" color="primary"
-          onClick={() => BuyClick()}>
+          onClick={() => buyClick()}>
             Buy
           </Button>
         </Grid>
