@@ -41,17 +41,17 @@ export default function Operations(props, ref) {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const BuymCurrency = (selC) => {
+  const buymCurrency = (selC) => {
     let final = parseFloat(values.BuyAmount) * selC;
     return final;
   }
 
-  const BuydCurrency = (selC) => {
+  const buydCurrency = (selC) => {
     let final = parseFloat(values.BuyAmount) * selC;
     return final;
   }
 
-  const SubFromBalance = (balance, sub, balanceStr, balanceP, balanceStrP) => {
+  const subFromBalance = (balance, sub, balanceStr, balanceP, balanceStrP) => {
     if (sub > balance) {
       alert(`You don"t have enought balance to buy ${sub} !`);
     } else {
@@ -81,23 +81,23 @@ export default function Operations(props, ref) {
       switch (values.SelectedBuy) {
         case "brita":
           if (values.SelectedBuyWith === "reais") {
-            SubFromBalance(pstate.userRS, BuymCurrency(pstate.currencyBT.buy), "userRS", pstate.userBT, "userBT");
+            subFromBalance(pstate.userRS, buymCurrency(pstate.currencyBT.buy), "userRS", pstate.userBT, "userBT");
           } else {
-            SubFromBalance(pstate.userBC, BuydCurrency((1 / pstate.currencyBTBC.buy), "userBC", pstate.userBT, "userBT"));
+            subFromBalance(pstate.userBC, buydCurrency((1 / pstate.currencyBTBC.buy), "userBC", pstate.userBT, "userBT"));
           }
           break;
         case "bitcoin":
             if (values.SelectedBuyWith === "reais") {
-              SubFromBalance(pstate.userRS, BuymCurrency(pstate.currencyBC.buy), "userRS", pstate.userBC, "userBC");
+              subFromBalance(pstate.userRS, buymCurrency(pstate.currencyBC.buy), "userRS", pstate.userBC, "userBC");
             } else {
-              SubFromBalance(pstate.userBT, BuydCurrency(pstate.currencyBTBC.buy), "userBT", pstate.userBC, "userBC");
+              subFromBalance(pstate.userBT, buydCurrency(pstate.currencyBTBC.buy), "userBT", pstate.userBC, "userBC");
             }
           break;
         case "reais":
             if (values.SelectedBuyWith === "brita") {
-              SubFromBalance(pstate.userBT, BuymCurrency((1 / pstate.currencyBT.buy)), "userBT", pstate.userRS, "userRS");
+              subFromBalance(pstate.userBT, buymCurrency((1 / pstate.currencyBT.buy)), "userBT", pstate.userRS, "userRS");
             } else {
-              SubFromBalance(pstate.userBC, BuymCurrency((1 / pstate.currencyBC.buy)), "userBC", pstate.userRS, "userRS");
+              subFromBalance(pstate.userBC, buymCurrency((1 / pstate.currencyBC.buy)), "userBC", pstate.userRS, "userRS");
             }
           break;
         default:
