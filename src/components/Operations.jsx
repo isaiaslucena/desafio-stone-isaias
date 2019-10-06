@@ -77,6 +77,7 @@ export default function Operations(props, ref) {
   const buyClick = () => {
     if (values.SelectedBuy === values.SelectedBuyWith) {
       alert("You cannot buy the same currency, select a different one...");
+      return false;
     } else {
       switch (values.SelectedBuy) {
         case "brita":
@@ -104,6 +105,7 @@ export default function Operations(props, ref) {
           alert("Unknown currency!");
           break;
       }
+      return true;
     }
   }
 
