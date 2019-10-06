@@ -69,7 +69,7 @@ class Login extends React.Component {
 					</Grid>
 					<Grid item>
 						<LinkRouter className="login-link" to="/signup">
-							{"Don"t have an account? Sign Up"}
+							{"Don't have an account? Sign Up"}
 						</LinkRouter>
 					</Grid>
 				</Grid>
