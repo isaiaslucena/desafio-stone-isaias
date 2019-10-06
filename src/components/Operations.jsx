@@ -95,7 +95,6 @@ export default function Operations(props, ref) {
         amount: sub,
         currency: values.SelectedBuyWith
       }
-      props.addstatement(sublog);
 
       let finalp = parseInt(balanceP) + parseInt(values.BuyAmount);
       props.setuserbalance(balanceStrP, finalp);
@@ -104,7 +103,7 @@ export default function Operations(props, ref) {
         amount: parseInt(values.BuyAmount),
         currency: values.SelectedBuy
       }
-      props.addstatement(pluslog);
+      props.addstatement(sublog, pluslog);
     }
   }
 
