@@ -36,7 +36,7 @@ class Content extends React.Component {
 		}).catch(function(error) {
 			// An error happened.
       // console.log(error);
-      alert('Error when singinned out!');
+      alert("Error when singinned out!");
 		});
 	}
 
