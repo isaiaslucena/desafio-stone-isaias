@@ -17,6 +17,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 
 import Operations from "./Operations"
+import Statement from "./Statement"
 
 class Content extends React.Component {
 	constructor(props) {
@@ -40,6 +41,10 @@ class Content extends React.Component {
 
   handleChange(event, newVal) {
     this.setState({value: newVal})
+  }
+
+  FormatStringRS(RSval) {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(RSval);
   }
 
   FormatStringBT(BTval) {
@@ -98,7 +103,8 @@ class Content extends React.Component {
                   {/* <Typography className="content-cardpos" color="textSecondary">
                   </Typography> */}
                   <Typography variant="h6" component="h6">
-                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(this.props.state.userRS)}
+                    {/* new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(this.props.state.userRS) */}
+                    {this.FormatStringRS(this.props.state.userRS)}
                   </Typography>
                   <Typography variant="body2" component="p">
                     {this.FormatStringBT(this.props.state.userBT)}
@@ -161,20 +167,16 @@ class Content extends React.Component {
                 scrollButtons="auto"
                 aria-label="scrollable auto tabs"
                 >
-                <Tab label="Statement" id="scrollable-auto-tab-1" aria-controls="scrollable-auto-tabpanel-1" />
-                <Tab label="Currency" id="scrollable-auto-tab-2" aria-controls="scrollable-auto-tabpanel-2" />
-                <Tab label="Operations" id="scrollable-auto-tab-3" aria-controls="scrollable-auto-tabpanel-3" />
+                <Tab label="Operations" id="scrollable-auto-tab-1" aria-controls="scrollable-auto-tabpanel-1" />
+                <Tab label="Statement" id="scrollable-auto-tab-2" aria-controls="scrollable-auto-tabpanel-2" />
               </Tabs>
               </AppBar>
               <TabPanel value={this.state.value} index={0}>
-                Item One
+                <Operations state={this.props.state} setuserbalance={this.props.setuserbalance} addstatement={this.props.addstatement}></Operations>
               </TabPanel>
               <TabPanel value={this.state.value} index={1}>
-                Item Two
+                <Statement state={this.props.state} formatstringbt={this.FormatStringBT} formatstringbc={this.FormatStringBC}></Statement>
               </TabPanel>
-                <TabPanel value={this.state.value} index={2}>
-                  <Operations state={this.props.state} setuserbalance={this.props.setuserbalance} addstatement={this.props.addstatement}></Operations>
-                </TabPanel>
             </Grid>
 				  </Grid>
         </div>
