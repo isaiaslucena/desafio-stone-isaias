@@ -43,6 +43,10 @@ class Content extends React.Component {
     this.setState({value: newVal})
   }
 
+  FormatStringRS(RSval) {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(RSval);
+  }
+
   FormatStringBT(BTval) {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
     .formatToParts(BTval)
@@ -99,7 +103,8 @@ class Content extends React.Component {
                   {/* <Typography className="content-cardpos" color="textSecondary">
                   </Typography> */}
                   <Typography variant="h6" component="h6">
-                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(this.props.state.userRS)}
+                    {/* new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(this.props.state.userRS) */}
+                    {this.FormatStringRS(this.props.state.userRS)}
                   </Typography>
                   <Typography variant="body2" component="p">
                     {this.FormatStringBT(this.props.state.userBT)}
