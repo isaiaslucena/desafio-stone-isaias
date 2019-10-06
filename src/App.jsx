@@ -1,7 +1,7 @@
 import React from "react";
 import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
-import SignIn from "./components/SignIn"
-import Content from "./components/Content"
+import SignIn from "./components/SignIn";
+import Content from "./components/Content";
 import "./App.css";
 import * as firebase from "firebase/app";
 import "firebase/auth";
