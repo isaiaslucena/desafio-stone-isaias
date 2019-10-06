@@ -1,4 +1,6 @@
 import React from 'react';
+import {Redirect} from "react-router-dom";
+
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
@@ -10,11 +12,11 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-// import CardActions from '@material-ui/core/CardActions';
 
-import {Redirect} from "react-router-dom";
 import * as firebase from "firebase/app";
 import "firebase/auth";
+
+import Operations from "./Operations"
 
 class Content extends React.Component {
 	constructor(props) {
@@ -38,6 +40,28 @@ class Content extends React.Component {
 
   handleChange(event, newVal) {
     this.setState({value: newVal})
+  }
+
+  FormatStringBT(BTval) {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+    .formatToParts(BTval)
+    .map(({type, value}) => {
+      switch (type) {
+        case 'currency': return 'Brita$';
+        default : return value;
+      }
+    }).reduce((string, part) => string + part)
+  }
+
+  FormatStringBC(BCval) {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+    .formatToParts(BCval)
+    .map(({type, value}) => {
+      switch (type) {
+        case 'currency': return '฿TC';
+        default : return value;
+      }
+    }).reduce((string, part) => string + part)
   }
 
 	render() {
@@ -77,28 +101,10 @@ class Content extends React.Component {
                     {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(this.props.state.userRS)}
                   </Typography>
                   <Typography variant="body2" component="p">
-                    {
-                      new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
-                      .formatToParts(this.props.state.userBT)
-                      .map(({type, value}) => {
-                        switch (type) {
-                          case 'currency': return 'Brita$';
-                          default : return value;
-                        }
-                      }).reduce((string, part) => string + part)
-                    }
+                    {this.FormatStringBT(this.props.state.userBT)}
                   </Typography>
                   <Typography variant="body2" component="p">
-                  {
-                      new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
-                      .formatToParts(this.props.state.userBC)
-                      .map(({type, value}) => {
-                        switch (type) {
-                          case 'currency': return 'BTC';
-                          default : return value;
-                        }
-                      }).reduce((string, part) => string + part)
-                    }
+                  {this.FormatStringBC(this.props.state.userBC)}
                   </Typography>
                 </CardContent>
                 {/* <CardActions>
@@ -120,19 +126,19 @@ class Content extends React.Component {
                     <Grid item xs={6}>
                       <Typography variant="body1" component="p">Buy</Typography>
                       <Typography variant="body2" component="p">
-                        {'Brita$ ' + this.props.state.currencyBT.buy}
+                        {this.FormatStringBT(this.props.state.currencyBT.buy)}
                       </Typography>
                       <Typography variant="body2" component="p">
-                        {'BTC ' + this.props.state.currencyBC.buy}
+                        {this.FormatStringBC(this.props.state.currencyBC.buy)}
                       </Typography>
                     </Grid>
                     <Grid item xs={6}>
                       <Typography variant="body1" component="p">Sell</Typography>
                       <Typography variant="body2" component="p">
-                        {'Brita$ ' + this.props.state.currencyBT.sell}
+                        {this.FormatStringBT(this.props.state.currencyBT.sell)}
                       </Typography>
                       <Typography variant="body2" component="p">
-                        {'BTC ' + this.props.state.currencyBC.sell}
+                        {this.FormatStringBC(this.props.state.currencyBC.sell)}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -157,7 +163,7 @@ class Content extends React.Component {
                 >
                 <Tab label="Statement" id="scrollable-auto-tab-1" aria-controls="scrollable-auto-tabpanel-1" />
                 <Tab label="Currency" id="scrollable-auto-tab-2" aria-controls="scrollable-auto-tabpanel-2" />
-                <Tab label="Operações" id="scrollable-auto-tab-3" aria-controls="scrollable-auto-tabpanel-3" />
+                <Tab label="Operations" id="scrollable-auto-tab-3" aria-controls="scrollable-auto-tabpanel-3" />
               </Tabs>
               </AppBar>
               <TabPanel value={this.state.value} index={0}>
@@ -166,9 +172,9 @@ class Content extends React.Component {
               <TabPanel value={this.state.value} index={1}>
                 Item Two
               </TabPanel>
-              <TabPanel value={this.state.value} index={2}>
-                Item Three
-              </TabPanel>
+                <TabPanel value={this.state.value} index={2}>
+                  <Operations state={this.props.state} setuserbalance={this.props.setuserbalance} addstatement={this.props.addstatement}></Operations>
+                </TabPanel>
             </Grid>
 				  </Grid>
         </div>
