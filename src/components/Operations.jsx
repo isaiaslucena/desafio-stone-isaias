@@ -47,7 +47,7 @@ export default function Operations(props, ref) {
   }
 
   const BuydCurrency = (selC) => {
-    let final = parseFloat(values.BuyAmount) * selC
+    let final = parseFloat(values.BuyAmount) * selC;
     return final;
   }
 
@@ -159,5 +159,5 @@ export default function Operations(props, ref) {
         </Grid>
       </Grid>
     </div>
-  )
+  );
 }
