@@ -5,13 +5,10 @@ export default function Statement(props, ref) {
     <div>
         {props.state.statement.map((sts, idsts) => (
           <ul key={idsts}>
-            <span>{sts.date}</span>
+            <span>Date {sts.date}:</span>
             {sts.log.map((lg, idlg) => (
               <li key={idlg}>
-                <span>{lg.time}</span>
-                <span>{lg.operation}</span>
-                <span>{lg.currency}</span>
-                <span>{lg.amount}</span>
+                <span>{lg.time} - {lg.operation} {new Intl.NumberFormat('pt-BR').format(lg.amount)} {lg.currency}</span>
               </li>
             ))}
           </ul>
