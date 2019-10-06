@@ -14,7 +14,7 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 class App extends React.Component {
 	constructor(props) {
 		super(props)
-    this.fsUsersCol = firebase.firestore().collection('users');
+		this.fsUsersCol = firebase.firestore().collection('users');
 		this.state = {
 			loggedIn: false,
 			gSignedIn: false,
@@ -80,7 +80,7 @@ class App extends React.Component {
 		this.setState({[balanceStr]: newVal});
 	}
 
-	addStatement = (op) => {
+	addStatement = (subop, plusop) => {
 		let now = new Date();
 		let nyear = now.getFullYear();
 		let nmonth = ('0' + (now.getMonth()+1)).slice(-2);
@@ -94,16 +94,22 @@ class App extends React.Component {
 
 		let searchdate = this.state.statement.map(function(item) { return item.date; }).indexOf(isodate);
 		if (searchdate === -1) {
-			console.log(`${isodate} not found`);
+			// console.log(`${isodate} not found`);
 
 			let fulllog = {
 				"date": isodate,
 				"log": [
 					{
 						"time": tfourtime,
-						"operation": op.type,
-						"amount": op.amount,
-						"currency": op.currency
+						"operation": subop.type,
+						"amount": subop.amount,
+						"currency": subop.currency
+					},
+					{
+						"time": tfourtime,
+						"operation": plusop.type,
+						"amount": plusop.amount,
+						"currency": plusop.currency
 					}
 				],
 				"balance": {
@@ -114,17 +120,27 @@ class App extends React.Component {
 			};
 			this.setState({statement: [ ...this.state.statement, fulllog]});
 		} else {
-			console.log(`${isodate} found`);
+			// console.log(`${isodate} found`);
 
-			let nlog = {
+			let sublog = {
 				"time": tfourtime,
-				"operation": op.type,
-				"amount": op.amount,
-				"currency": op.currency
+				"operation": subop.type,
+				"amount": subop.amount,
+				"currency": subop.currency
+			};
+			let pluslog = {
+				"time": tfourtime,
+				"operation": plusop.type,
+				"amount": plusop.amount,
+				"currency": plusop.currency
 			};
 
-			const carray = [...this.state.statement];
-			carray[searchdate].log.push(nlog);
+			let carray = [...this.state.statement];
+			carray[searchdate].log.push(sublog);
+			carray[searchdate].log.push(pluslog);
+			carray[searchdate].balance.reais = this.state.userRS;
+			carray[searchdate].balance.brita = this.state.userBT;
+			carray[searchdate].balance.bitcoin = this.state.userBC;
 			this.setState({statement: carray});
 		}
 	}
