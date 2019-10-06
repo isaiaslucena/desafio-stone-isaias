@@ -51,6 +51,29 @@ export default function Operations(props, ref) {
     return final;
   }
 
+  const SubFromBalance = (balance, sub, balanceStr, balanceP, balanceStrP) => {
+    if (sub > balance) {
+      alert(`You don"t have enought balance to buy ${sub} !`);
+    } else {
+      let final = balance - sub;
+      props.setuserbalance(balanceStr, final);
+      let sublog = {
+        type: "debit",
+        amount: sub,
+        currency: values.SelectedBuyWith
+      }
+
+      let finalp = parseInt(balanceP) + parseInt(values.BuyAmount);
+      props.setuserbalance(balanceStrP, finalp);
+      let pluslog = {
+        type: "credit",
+        amount: parseInt(values.BuyAmount),
+        currency: values.SelectedBuy
+      }
+      props.addstatement(sublog, pluslog);
+    }
+  }
+
   const buyClick = () => {
     if (values.SelectedBuy === values.SelectedBuyWith) {
       alert("You cannot buy the same currency, select a different one...");
@@ -81,29 +104,6 @@ export default function Operations(props, ref) {
           alert("Unknown currency!");
           break;
       }
-    }
-  }
-
-  const SubFromBalance = (balance, sub, balanceStr, balanceP, balanceStrP) => {
-    if (sub > balance) {
-      alert(`You don"t have enought balance to buy ${sub} !`);
-    } else {
-      let final = balance - sub;
-      props.setuserbalance(balanceStr, final);
-      let sublog = {
-        type: "debit",
-        amount: sub,
-        currency: values.SelectedBuyWith
-      }
-
-      let finalp = parseInt(balanceP) + parseInt(values.BuyAmount);
-      props.setuserbalance(balanceStrP, finalp);
-      let pluslog = {
-        type: "credit",
-        amount: parseInt(values.BuyAmount),
-        currency: values.SelectedBuy
-      }
-      props.addstatement(sublog, pluslog);
     }
   }
 
