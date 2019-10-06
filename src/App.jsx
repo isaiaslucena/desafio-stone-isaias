@@ -1,41 +1,41 @@
-import React from 'react';
+import React from "react";
 import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
-import SignIn from './components/SignIn'
-import Content from './components/Content'
-import './App.css';
+import SignIn from "./components/SignIn";
+import Content from "./components/Content";
+import "./App.css";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import axios from 'axios';
-import { openDB } from 'idb';
+import axios from "axios";
+import { openDB } from "idb";
 
-const firebaseConfig = require('./firebase-config.json').result;
+const firebaseConfig = require("./firebase-config.json").result;
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 async function idDB(userinfo) {
-  const db = await openDB('usersDB', 1, {
+  const db = await openDB("usersDB", 1, {
     upgrade(db) {
-      db.createObjectStore('users', {
-        keyPath: 'userDocId',
+      db.createObjectStore("users", {
+        keyPath: "userDocId",
 				autoIncrement: false,
 				unique: true
       });
     }
   });
 
-	const exists = (await db.get('users', userinfo.userDocId)) || false;
+	const exists = (await db.get("users", userinfo.userDocId)) || false;
 
 	if (exists) {
-		await db.put('users', userinfo);
+		await db.put("users", userinfo);
 	} else {
-		await db.add('users', userinfo);
+		await db.add("users", userinfo);
 	}
 }
 
 class App extends React.Component {
 	constructor(props) {
 		super(props)
-		this.fsUsersCol = firebase.firestore().collection('users');
+		this.fsUsersCol = firebase.firestore().collection("users");
 		this.state = {
 			loggedIn: false,
 			gSignedIn: false,
@@ -70,7 +70,7 @@ class App extends React.Component {
 		let tyear = tdate.getFullYear();
 		let todaydate = tmonth+"-"+tday+"-"+tyear;
 
-		axios.get("https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='"+todaydate+"'&$format=json&$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao").then((resp) => {
+		axios.get(`https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='${todaydate}'&$format=json&$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao`).then((resp) => {
 			// console.log(resp.data);
 			this.setState({
 				currencyBT: {
@@ -104,14 +104,14 @@ class App extends React.Component {
 	addStatement = (subop, plusop) => {
 		let now = new Date();
 		let nyear = now.getFullYear();
-		let nmonth = ('0' + (now.getMonth()+1)).slice(-2);
-		let nday = ('0' + now.getDate()).slice(-2);
-		let isodate = nyear+'-'+nmonth+'-'+nday;
+		let nmonth = ("0" + (now.getMonth()+1)).slice(-2);
+		let nday = ("0" + now.getDate()).slice(-2);
+		let isodate = nyear+"-"+nmonth+"-"+nday;
 
-		let nhour = ('0' + now.getHours()).slice(-2);
-		let nmin = ('0' + now.getMinutes()).slice(-2);
-		let nsec = ('0' + now.getSeconds()).slice(-2);
-		let tfourtime = nhour+':'+nmin+':'+nsec;
+		let nhour = ("0" + now.getHours()).slice(-2);
+		let nmin = ("0" + now.getMinutes()).slice(-2);
+		let nsec = ("0" + now.getSeconds()).slice(-2);
+		let tfourtime = nhour+":"+nmin+":"+nsec;
 
 		let searchdate = this.state.statement.map(function(item) { return item.date; }).indexOf(isodate);
 		if (searchdate === -1) {
@@ -184,7 +184,7 @@ class App extends React.Component {
 					gToken: user.refreshToken
 				});
 				//verify if user exists
-				this.fsUsersCol.where('userEmail','==',user.email).get().then((doc) => {
+				this.fsUsersCol.where("userEmail","==",user.email).get().then((doc) => {
 					if (doc.empty) {
 						this.setState({
 							userRS: 100000.00,
@@ -192,12 +192,12 @@ class App extends React.Component {
 							userBC: 0.0
 						});
 						this.fsUsersCol.add(this.state).then((docAdded) => {
-							// console.log('user added to firestore');
+							// console.log("user added to firestore");
 							// console.log(docAdded);
 							this.setState({userDocId: docAdded.id});
 						});
 					} else {
-						// console.log('user exists on firestore');
+						// console.log("user exists on firestore");
 						// console.log(doc);
 						this.fsUsersCol.doc(doc.docs[0].id).get().then((docGet) => {
 							const userData = docGet.data();
