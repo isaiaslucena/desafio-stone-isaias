@@ -1,69 +1,70 @@
-import React from 'react';
+import React from "react";
 import {Redirect} from "react-router-dom";
 
-import Grid from '@material-ui/core/Grid';
-import Chip from '@material-ui/core/Chip';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Grid from "@material-ui/core/Grid";
+import Chip from "@material-ui/core/Chip";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 
 import * as firebase from "firebase/app";
 import "firebase/auth";
 
-import Operations from "./Operations"
-import Statement from "./Statement"
+import Operations from "./Operations";
+import Statement from "./Statement";
 
 class Content extends React.Component {
 	constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       value: 0,
       index: 0
     }
-    this.SignOutClick = this.SignOutClick.bind(this);
+    this.signOutClick = this.signOutClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
 	}
 
-	SignOutClick() {
+	signOutClick() {
 		firebase.auth().signOut().then(function() {
-      console.log('signned out sucessfuly!');
+      console.log("signned out sucessfuly!");
 		}).catch(function(error) {
 			// An error happened.
-			console.log(error);
+      // console.log(error);
+      alert("Error when singinned out!");
 		});
 	}
 
   handleChange(event, newVal) {
-    this.setState({value: newVal})
+    this.setState({value: newVal});
   }
 
-  FormatStringRS(RSval) {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(RSval);
+  formatStringRS(RSval) {
+    return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(RSval);
   }
 
-  FormatStringBT(BTval) {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+  formatStringBT(BTval) {
+    return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" })
     .formatToParts(BTval)
     .map(({type, value}) => {
       switch (type) {
-        case 'currency': return 'Brita$';
+        case "currency": return "Brita$";
         default : return value;
       }
     }).reduce((string, part) => string + part)
   }
 
-  FormatStringBC(BCval) {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+  formatStringBC(BCval) {
+    return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" })
     .formatToParts(BCval)
     .map(({type, value}) => {
       switch (type) {
-        case 'currency': return '฿TC';
+        case "currency": return "฿TC";
         default : return value;
       }
     }).reduce((string, part) => string + part)
@@ -83,7 +84,7 @@ class Content extends React.Component {
               </Typography>
             </Grid>
             <Grid item xs={4}>
-              <Button type="button" variant="contained" color="primary" className="content-pullright" onClick={this.SignOutClick}>
+              <Button type="button" variant="contained" color="primary" className="content-pullright" onClick={this.signOutClick}>
                 Sign Out
               </Button>
             </Grid>
@@ -103,14 +104,14 @@ class Content extends React.Component {
                   {/* <Typography className="content-cardpos" color="textSecondary">
                   </Typography> */}
                   <Typography variant="h6" component="h6">
-                    {/* new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(this.props.state.userRS) */}
-                    {this.FormatStringRS(this.props.state.userRS)}
+                    {/* new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(this.props.state.userRS) */}
+                    {this.formatStringRS(this.props.state.userRS)}
                   </Typography>
                   <Typography variant="body2" component="p">
-                    {this.FormatStringBT(this.props.state.userBT)}
+                    {this.formatStringBT(this.props.state.userBT)}
                   </Typography>
                   <Typography variant="body2" component="p">
-                  {this.FormatStringBC(this.props.state.userBC)}
+                  {this.formatStringBC(this.props.state.userBC)}
                   </Typography>
                 </CardContent>
                 {/* <CardActions>
@@ -132,19 +133,19 @@ class Content extends React.Component {
                     <Grid item xs={6}>
                       <Typography variant="body1" component="p">Buy</Typography>
                       <Typography variant="body2" component="p">
-                        {this.FormatStringBT(this.props.state.currencyBT.buy)}
+                        {this.formatStringBT(this.props.state.currencyBT.buy)}
                       </Typography>
                       <Typography variant="body2" component="p">
-                        {this.FormatStringBC(this.props.state.currencyBC.buy)}
+                        {this.formatStringBC(this.props.state.currencyBC.buy)}
                       </Typography>
                     </Grid>
                     <Grid item xs={6}>
                       <Typography variant="body1" component="p">Sell</Typography>
                       <Typography variant="body2" component="p">
-                        {this.FormatStringBT(this.props.state.currencyBT.sell)}
+                        {this.formatStringBT(this.props.state.currencyBT.sell)}
                       </Typography>
                       <Typography variant="body2" component="p">
-                        {this.FormatStringBC(this.props.state.currencyBC.sell)}
+                        {this.formatStringBC(this.props.state.currencyBC.sell)}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -175,7 +176,7 @@ class Content extends React.Component {
                 <Operations state={this.props.state} setuserbalance={this.props.setuserbalance} addstatement={this.props.addstatement}></Operations>
               </TabPanel>
               <TabPanel value={this.state.value} index={1}>
-                <Statement state={this.props.state} formatstringbt={this.FormatStringBT} formatstringbc={this.FormatStringBC}></Statement>
+                <Statement state={this.props.state} formatstringbt={this.formatStringBT} formatstringbc={this.formatStringBC}></Statement>
               </TabPanel>
             </Grid>
 				  </Grid>

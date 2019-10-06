@@ -1,23 +1,23 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListSubheader from "@material-ui/core/ListSubheader";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '100%',
+    width: "100%",
     backgroundColor: theme.palette.background.paper,
-    position: 'relative',
-    overflow: 'auto',
+    position: "relative",
+    overflow: "auto",
     maxHeight: 500
   },
   listSection: {
-    backgroundColor: 'inherit'
+    backgroundColor: "inherit"
   },
   ul: {
-    backgroundColor: 'inherit',
+    backgroundColor: "inherit",
     padding: 0,
   },
   liItem: {
@@ -38,7 +38,7 @@ export default function Statement(props, ref) {
             <ListSubheader>{sts.date}</ListSubheader>
             {sts.log.map((lg,idlg) => (
               <ListItem key={idlg} className={classes.liItem}>
-                <ListItemText primary={`${lg.time} - ${lg.operation} ${new Intl.NumberFormat('pt-BR').format(lg.amount)} ${lg.currency}`} />
+                <ListItemText primary={`${lg.time} - ${lg.operation} ${new Intl.NumberFormat("pt-BR").format(lg.amount)} ${lg.currency}`} />
               </ListItem>
             ))}
           </ul>

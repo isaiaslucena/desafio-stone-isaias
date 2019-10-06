@@ -34,7 +34,7 @@ async function idDB(userinfo) {
 
 class App extends React.Component {
 	constructor(props) {
-		super(props)
+		super(props);
 		this.fsUsersCol = firebase.firestore().collection("users");
 		this.state = {
 			loggedIn: false,
