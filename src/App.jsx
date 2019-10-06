@@ -34,7 +34,7 @@ class App extends React.Component {
 		}
 	}
 
-	getBTcurrency() {
+	getBTcurrency = () => {
 		let tdate = new Date();
 		let tdow = tdate.getDay();
 		//check if today is sunday
@@ -129,11 +129,11 @@ class App extends React.Component {
 		}
 	}
 
-	componentWillUnmount() {
+	componentWillUnmount = () => {
 		this.unregisterAuthObserver();
 	}
 
-	componentDidMount() {
+	componentDidMount = () => {
 		//observer auth
 		this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
 			if (user) {
@@ -155,12 +155,12 @@ class App extends React.Component {
 							userBC: 0.0
 						});
 						this.fsUsersCol.add(this.state).then((docAdded) => {
-							console.log('user added to firestore');
-							console.log(docAdded);
+							// console.log('user added to firestore');
+							// console.log(docAdded);
 							this.setState({userDocId: docAdded.id});
 						});
 					} else {
-						console.log('user exists on firestore');
+						// console.log('user exists on firestore');
 						// console.log(doc);
 						this.fsUsersCol.doc(doc.docs[0].id).get().then((docGet) => {
 							const userData = docGet.data();
@@ -191,7 +191,7 @@ class App extends React.Component {
 		});
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate = () => {
 		if (this.state.loggedIn && this.state.userDocId.length > 0) {
 			this.fsUsersCol.doc(this.state.userDocId).set(this.state);
 		}
