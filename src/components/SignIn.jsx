@@ -21,7 +21,9 @@ provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {email: "", password: ""};
 		this.googleLoginClick = this.googleLoginClick.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
@@ -42,15 +44,19 @@ class Login extends React.Component {
 		});
 	}
 
+	handleChange(e) {
+		this.setState({[e.target.name]: e.target.value});
+	}
+
 	handleSubmit(event) {
 		event.preventDefault();
-		console.log(event);
-		alert("This feature is not available! Please sigin with Google credentials!");
-		// firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-		// 	// Handle Errors here.
-		// 	var errorCode = error.code;
-		// 	var errorMessage = error.message;
-		// });
+		const cemail = this.state.email;
+		const cpass = this.state.password;
+		firebase.auth().signInWithEmailAndPassword(cemail, cpass).catch(function(error) {
+			// var errorCode = error.code;
+			const errorMessage = error.message;
+			alert(errorMessage);
+		});
 	}
 
 	render() {
@@ -92,9 +98,9 @@ class Login extends React.Component {
 						<Typography component="h1" variant="h5">
 							{this.props.btntxt}
 						</Typography>
-						<form className="login-form" onSubmit={this.handleSubmit}>
-							<TextField required fullWidth id="email" name="email" label="Email" margin="normal"/>
-							<TextField required fullWidth id="password" name="password" type="password" label="Password" margin="normal" autoComplete="current-password"/>
+						<form className="login-form" data-testid="sign-form" onSubmit={this.handleSubmit}>
+							<TextField required fullWidth inputProps={{ "data-testid":"sign-email"}} onChange={this.handleChange} name="email" label="Email" margin="normal"/>
+							<TextField required fullWidth inputProps={{ "data-testid":"sign-pass" }} onChange={this.handleChange} name="password" type="password" label="Password" margin="normal" autoComplete="current-password"/>
 							{rememberme}
 							<Button type="submit" fullWidth variant="contained" color="primary" className="login-submitbtn">
 								{this.props.btntxt}
