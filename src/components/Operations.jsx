@@ -86,7 +86,7 @@ export default function Operations(props, ref) {
           if (values.SelectedBuyWith === "reais") {
             subFromBalance(pstate.userRS, buymCurrency(pstate.currencyBT.buy), "userRS", pstate.userBT, "userBT");
           } else {
-            subFromBalance(pstate.userBC, buydCurrency((1 / pstate.currencyBTBC.buy), "userBC", pstate.userBT, "userBT"));
+            subFromBalance(pstate.userBC, buydCurrency((1 / pstate.currencyBTBC.buy)), "userBC", pstate.userBT, "userBT");
           }
           break;
         case "bitcoin":

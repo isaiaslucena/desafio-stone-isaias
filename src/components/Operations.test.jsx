@@ -23,13 +23,13 @@ const arrayvals = [
 ];
 
 test.only.each(arrayvals)("Buy %s (amount of %i) with %s", async (buy, amount, buywith, valsub, valplus, balstrsub) => {
-  console.log(`Buy ${buy} (amount of ${amount}) with ${buywith} - sub is ${valsub} and plus is ${valplus} - user balance to sub is ${balstrsub}`);
+  // console.log(`Buy ${buy} (amount of ${amount}) with ${buywith} - sub is ${valsub} and plus is ${valplus} - user balance to sub is ${balstrsub}`);
 
   var finalvaluesub = 0;
   var finalvalueplus = 0;
 
   const setuserbalance = (balanceStr, finalval) => {
-    console.log(`Balance: ${balanceStr} | Value: ${finalval}`);
+    // console.log(`Balance: ${balanceStr} | Value: ${finalval}`);
     if (balanceStr === balstrsub) {
       finalvalueplus = finalval;
     } else {
