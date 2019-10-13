@@ -3,13 +3,15 @@ import React, {useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
+
+import InputLabel from "@material-ui/core/InputLabel";
+import NativeSelect from "@material-ui/core/NativeSelect";
 
 const useStyles = makeStyles(theme => ({
   button: {
-    marginTop: theme.spacing(3.6)
-  },
+    marginTop: theme.spacing(1.5)
+  }
 }));
 
 const currencies = [
@@ -84,7 +86,7 @@ export default function Operations(props, ref) {
           if (values.SelectedBuyWith === "reais") {
             subFromBalance(pstate.userRS, buymCurrency(pstate.currencyBT.buy), "userRS", pstate.userBT, "userBT");
           } else {
-            subFromBalance(pstate.userBC, buydCurrency((1 / pstate.currencyBTBC.buy), "userBC", pstate.userBT, "userBT"));
+            subFromBalance(pstate.userBC, buydCurrency((1 / pstate.currencyBTBC.buy)), "userBC", pstate.userBT, "userBT");
           }
           break;
         case "bitcoin":
@@ -113,47 +115,40 @@ export default function Operations(props, ref) {
     <div>
       <Grid container direction="row" spacing={1}>
         <Grid item xs={3}>
-          <TextField fullWidth select id="select-buy"
-            label="Buy" margin="normal"
+
+          <InputLabel shrink htmlFor="buy-placeholder">Buy</InputLabel>
+          <NativeSelect fullWidth
             value={values.SelectedBuy}
             onChange={handleChange("SelectedBuy")}
-            SelectProps={{
-              MenuProps: {
-                className: classes.menu,
-              },
-            }}>
+            inputProps={{ "data-testid": "op-buy-sel", id: "buy-placeholder" }}
+          >
             {currencies.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
+              <option key={option.value} value={option.value}>{option.label}</option>
             ))}
-          </TextField>
+          </NativeSelect>
         </Grid>
         <Grid item xs={3}>
-          <TextField fullWidth id="input-buyamount"
-          label="Amount" margin="normal"
+          <TextField fullWidth inputProps={{ "data-testid":"op-amount-input" }}
+          label="Amount"
           value={values.BuyAmount}
           onChange={handleChange("BuyAmount")}></TextField>
         </Grid>
         <Grid item xs={3}>
-          <TextField fullWidth select id="select-buywith"
-              label="With" margin="normal"
-              value={values.SelectedBuyWith}
-              onChange={handleChange("SelectedBuyWith")}
-              SelectProps={{
-                MenuProps: {
-                  className: classes.menu,
-                },
-              }}>
-              {currencies.map(option => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
+
+        <InputLabel shrink htmlFor="buywith-placeholder">Buy with</InputLabel>
+          <NativeSelect fullWidth
+            value={values.SelectedBuyWith}
+            onChange={handleChange("SelectedBuyWith")}
+            inputProps={{ "data-testid": "op-buywith-sel", id: "buywith-placeholder" }}
+          >
+            {currencies.map(option => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+          </NativeSelect>
         </Grid>
         <Grid item xs={3}>
-          <Button fullWidth className={classes.button}
+          <Button fullWidth data-testid="op-buy-button"
+          className={classes.button}
           variant="contained" color="primary"
           onClick={() => buyClick()}>
             Buy
