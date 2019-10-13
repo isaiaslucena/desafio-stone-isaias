@@ -103,14 +103,14 @@ class Content extends React.Component {
                   </Typography>
                   {/* <Typography className="content-cardpos" color="textSecondary">
                   </Typography> */}
-                  <Typography variant="h6" component="h6">
+                  <Typography variant="h6" component="h6" data-testid="cont-rs-balance">
                     {/* new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(this.props.state.userRS) */}
                     {this.formatStringRS(this.props.state.userRS)}
                   </Typography>
-                  <Typography variant="body2" component="p">
+                  <Typography variant="body2" component="p" data-testid="cont-bt-balance">
                     {this.formatStringBT(this.props.state.userBT)}
                   </Typography>
-                  <Typography variant="body2" component="p">
+                  <Typography variant="body2" component="p" data-testid="cont-bc-balance">
                   {this.formatStringBC(this.props.state.userBC)}
                   </Typography>
                 </CardContent>
