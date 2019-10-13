@@ -120,7 +120,8 @@ export default function Operations(props, ref) {
           <NativeSelect fullWidth
             value={values.SelectedBuy}
             onChange={handleChange("SelectedBuy")}
-            inputProps={{ "data-testid": "op-buy-sel", id: "buy-placeholder" }}>
+            inputProps={{ "data-testid": "op-buy-sel", id: "buy-placeholder" }}
+          >
             {currencies.map(option => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
@@ -138,7 +139,8 @@ export default function Operations(props, ref) {
           <NativeSelect fullWidth
             value={values.SelectedBuyWith}
             onChange={handleChange("SelectedBuyWith")}
-            inputProps={{ "data-testid": "op-buywith-sel", id: "buywith-placeholder" }}>
+            inputProps={{ "data-testid": "op-buywith-sel", id: "buywith-placeholder" }}
+          >
             {currencies.map(option => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
