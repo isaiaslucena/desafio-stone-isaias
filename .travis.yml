@@ -1,21 +1,29 @@
 language: node_js
 node_js:
-  - 12
+- 12
 cache:
   directories:
   - node_modules
   - functions/node_modules
 before_install:
-  - npm install -g firebase-tools
-  - cd functions
-  - npm install
-  - cd ..
+- npm install -g firebase-tools
+- cd functions
+- npm install
+- cd ..
 script:
-  - npm test
+- npm test
 after_success:
-  - travis_wait 40 npm run build
-  - firebase use default --token $FIREBASE_TOKEN
-  - travis_wait firebase deploy -m "Travis deploy" --non-interactive --token $FIREBASE_TOKEN
+- travis_wait 40 npm run build
+- firebase use default --token $FIREBASE_TOKEN
+- travis_wait firebase deploy -m "Travis deploy" --non-interactive --token $FIREBASE_TOKEN
 branches:
   only:
-    - master
+  - master
+deploy:
+  provider: firebase
+  token:
+    secure: RKdAa11orrc2+zGE8c+u04ev9DLkjVCQmc4ryiuT+d0ZLhtbtmeJhpINWebmAgK/sz6SKsmcNFZ7QROQV/wM7EiVAKTmfmXtZZG5FIhJaeIBbfhrH9bPBTYGPMTfHbQMZM79Yc9K7dnldi1iLmECTqjug+OLSTgJtiW2QixxY3boaTFbOBVVDlIBRGx4zvH9eq9u1Uf52zumwiHap71jCi3lEyQHic1G8ErPFRuMt0AhLP+K++Ds/vzP7tYt2sAoEAYtOqDWMw3OWtrMX9dGnhFNhvQSYpKix2RRCfD6cOhe/WCyKsVKzFgzIiCWcX7VAj7JlusQ6unRwa9aUOTu6cLMLnp9kB5hvpVqrgHgQzTjjZR3XWNlECwvppiEWaMe/UwhJwvmvv8ISrm4ncrIgihsWDAE7OI27l8og7ANgA9cVd8/s2pqH0sO3N3kGnZXOg+frxYPHfFmpF9QvtjzMy34kBMaLtxyR/SoS/bdISP8baFFGPLIcutcEx9rkQ/3wJUaeupCLB87wSkeKCL+yuEhOmmq+IxOoDMBYB8YFTr32zQQOoTkoOl77iWHvm0klw1cwx94pSNngCKkNGRdJqQ6Z6B/mrBpTYz3ir2Uxw83rfZxLGimTWYtPrGIyAWQJ1uxhLRCrRT/4ihnurWUP6kB1aLFGUl1VGFdfLvHaIE=
+  project: desafio-stone-isaias
+env:
+  global:
+    secure: RKdAa11orrc2+zGE8c+u04ev9DLkjVCQmc4ryiuT+d0ZLhtbtmeJhpINWebmAgK/sz6SKsmcNFZ7QROQV/wM7EiVAKTmfmXtZZG5FIhJaeIBbfhrH9bPBTYGPMTfHbQMZM79Yc9K7dnldi1iLmECTqjug+OLSTgJtiW2QixxY3boaTFbOBVVDlIBRGx4zvH9eq9u1Uf52zumwiHap71jCi3lEyQHic1G8ErPFRuMt0AhLP+K++Ds/vzP7tYt2sAoEAYtOqDWMw3OWtrMX9dGnhFNhvQSYpKix2RRCfD6cOhe/WCyKsVKzFgzIiCWcX7VAj7JlusQ6unRwa9aUOTu6cLMLnp9kB5hvpVqrgHgQzTjjZR3XWNlECwvppiEWaMe/UwhJwvmvv8ISrm4ncrIgihsWDAE7OI27l8og7ANgA9cVd8/s2pqH0sO3N3kGnZXOg+frxYPHfFmpF9QvtjzMy34kBMaLtxyR/SoS/bdISP8baFFGPLIcutcEx9rkQ/3wJUaeupCLB87wSkeKCL+yuEhOmmq+IxOoDMBYB8YFTr32zQQOoTkoOl77iWHvm0klw1cwx94pSNngCKkNGRdJqQ6Z6B/mrBpTYz3ir2Uxw83rfZxLGimTWYtPrGIyAWQJ1uxhLRCrRT/4ihnurWUP6kB1aLFGUl1VGFdfLvHaIE=
