@@ -9,7 +9,13 @@ import "firebase/firestore";
 import axios from "axios";
 import { openDB } from "idb";
 
-const firebaseConfig = require("./firebase-config.json").result;
+const firebaseConfig = {
+	projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
+	databaseURL: process.env.REACT_APP_FIREBASE_DBURL,
+	apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
+	authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+	messagingSenderId: process.env.REACT_APP_FIREBASE_MSGID
+}
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 async function idDB(userinfo) {
