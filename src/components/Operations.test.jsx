@@ -1,5 +1,5 @@
-import React from 'react';
-import Operations from './Operations';
+import React from "react";
+import Operations from "./Operations";
 import {render,fireEvent} from "@testing-library/react";
 
 const mockstate = {
@@ -12,17 +12,19 @@ const mockstate = {
 };
 
 const arrayvals = [
-  ["brita", 1, "reais", 99995.4, 100001, "userBT"],
   ["brita", 10000, "bitcoin", 99998.75003124922, 110000, "userBT"],
+  ["brita", 1, "reais", 99995.4, 100001, "userBT"],
 
   ["bitcoin", 1, "reais", 63999.6, 100001, "userBC"],
   ["bitcoin", 1, "brita", 91999.8, 100001, "userBC"],
 
   ["reais", 10000, "brita", 97826.08695652174, 110000, "userRS"],
   ["reais", 40000, "bitcoin", 99998.88890123443, 140000, "userRS"]
-]
+];
 
-test.only.each(arrayvals)("Buy %s the amount of %i with %s", async (buy, amount, buywith, valsub, valplus, balstrsub) => {
+test.only.each(arrayvals)("Buy %s (amount of %i) with %s", async (buy, amount, buywith, valsub, valplus, balstrsub) => {
+  console.log(`Buy ${buy} (amount of ${amount}) with ${buywith} - sub is ${valsub} and plus is ${valplus} - user balance to sub is ${balstrsub}`);
+
   var finalvaluesub = 0;
   var finalvalueplus = 0;
 
