@@ -2,7 +2,7 @@ import React from 'react';
 import Operations from './Operations';
 import {render,fireEvent} from "@testing-library/react";
 
-const fakestatus = {
+const mockstatus = {
   userRS: 100000,
   userBT: 100000,
   userBC: 100000,
@@ -37,7 +37,7 @@ test.only.each(arrayvals)("Buy %s the amount of %i with %s", async (buy, amount,
 
   const addstatement = jest.fn();
 
-  const {getByTestId} = render(<Operations state={fakestatus} setuserbalance={setuserbalance} addstatement={addstatement} />);
+  const {getByTestId} = render(<Operations state={mockstatus} setuserbalance={setuserbalance} addstatement={addstatement} />);
 
   const buyselect = getByTestId("op-buy-sel");
   const buyamount = getByTestId("op-amount-input");
