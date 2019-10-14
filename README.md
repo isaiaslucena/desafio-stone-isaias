@@ -2,6 +2,6 @@
 
 ### Isaias Neto
 
-Open the application: [Firebase link](https://https://desafio-stone-isaias.firebaseapp.com).
+Open the application: [Firebase link](https://desafio-stone-isaias.firebaseapp.com).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
