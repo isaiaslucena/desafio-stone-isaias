@@ -6,11 +6,14 @@ cache:
   - node_modules
 script:
 - npm test
+after_success:
+  - travis_wait 40 npm run build
 branches:
   only:
   - master
 deploy:
   provider: firebase
+  message: "Travis-CI Deploy"
   token:
     secure: RKdAa11orrc2+zGE8c+u04ev9DLkjVCQmc4ryiuT+d0ZLhtbtmeJhpINWebmAgK/sz6SKsmcNFZ7QROQV/wM7EiVAKTmfmXtZZG5FIhJaeIBbfhrH9bPBTYGPMTfHbQMZM79Yc9K7dnldi1iLmECTqjug+OLSTgJtiW2QixxY3boaTFbOBVVDlIBRGx4zvH9eq9u1Uf52zumwiHap71jCi3lEyQHic1G8ErPFRuMt0AhLP+K++Ds/vzP7tYt2sAoEAYtOqDWMw3OWtrMX9dGnhFNhvQSYpKix2RRCfD6cOhe/WCyKsVKzFgzIiCWcX7VAj7JlusQ6unRwa9aUOTu6cLMLnp9kB5hvpVqrgHgQzTjjZR3XWNlECwvppiEWaMe/UwhJwvmvv8ISrm4ncrIgihsWDAE7OI27l8og7ANgA9cVd8/s2pqH0sO3N3kGnZXOg+frxYPHfFmpF9QvtjzMy34kBMaLtxyR/SoS/bdISP8baFFGPLIcutcEx9rkQ/3wJUaeupCLB87wSkeKCL+yuEhOmmq+IxOoDMBYB8YFTr32zQQOoTkoOl77iWHvm0klw1cwx94pSNngCKkNGRdJqQ6Z6B/mrBpTYz3ir2Uxw83rfZxLGimTWYtPrGIyAWQJ1uxhLRCrRT/4ihnurWUP6kB1aLFGUl1VGFdfLvHaIE=
   project: desafio-stone-isaias
