@@ -247,11 +247,11 @@ class App extends React.Component {
 			<Router>
 				<div>
 					<Switch>
-						<Route basename="/" exact path="/" render={props => <Content state={this.state} setuserbalance={this.setUserBalance} addstatement={this.addStatement}/>} />
-						<Route basename="/" path="/signin" render={props => <SignIn state={this.state} isSignIn={true} btntxt="Sign in" />}/>
-						<Route basename="/" path="/forgot" component={Forgot} />
-						<Route basename="/" path="/signup" render={props => <SignIn state={this.state} isSignIn={false} btntxt="Sign up" />} />
-						<Route basename="/" render={props => <NotFound state={this.state} />}/>
+						<Route exact path="/" render={props => <Content state={this.state} setuserbalance={this.setUserBalance} addstatement={this.addStatement}/>} />
+						<Route path="/signin" render={props => <SignIn state={this.state} isSignIn={true} btntxt="Sign in" />}/>
+						<Route path="/forgot" component={Forgot} />
+						<Route path="/signup" render={props => <SignIn state={this.state} isSignIn={false} btntxt="Sign up" />} />
+						<Route render={props => <NotFound state={this.state} />}/>
 					</Switch>
 				</div>
 			</Router>
