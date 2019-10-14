@@ -8,9 +8,8 @@ install:
   - npm install
 script:
   - npm test
-  - npm run build
 after_success:
-  - travis_wait 40 npm run build
+  - travis_wait 40 PUBLIC_URL=https://desafio-stone-isaias.firebaseapp.com && npm run build
 branches:
   only:
   - master
