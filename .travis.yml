@@ -4,14 +4,18 @@ node_js:
 cache:
   directories:
   - node_modules
+install:
+  - npm install
 script:
-- npm test
+  - npm test
+  - npm run build
 after_success:
   - travis_wait 40 npm run build
 branches:
   only:
   - master
 deploy:
+  skip_cleanup: true
   provider: firebase
   message: "Travis-CI Deploy"
   token:
