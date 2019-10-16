@@ -2,6 +2,13 @@
 
 ### Isaias Neto
 
-Open the application: [Firebase link](https://desafio-stone-isaias.firebaseapp.com).
+Open the application: [https://desafio-stone-isaias.firebaseapp.com](https://desafio-stone-isaias.firebaseapp.com).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+You can sign in with a test user **testuser@test.com** and password **testusertest** or you can sign in too, with you google account, by clicking on the **SIGN IN WITH GOOGLE** button.
+
+
+#### Bellow you can see the app usage:
+
+![App usage](/app-usage.gif?raw=true)
