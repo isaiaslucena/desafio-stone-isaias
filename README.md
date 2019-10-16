@@ -6,9 +6,18 @@ Open the application: [https://desafio-stone-isaias.firebaseapp.com](https://des
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-You can sign in with a test user **testuser@test.com** and password **testusertest** or you can sign in too, with you google account, by clicking on the **SIGN IN WITH GOOGLE** button.
-
+You can sign in with a test user **testuser@test.com** and password **testusertest** or you can just click on the **SIGN IN WITH GOOGLE** button, to login/create a new access with your google account.
 
 #### Bellow you can see the app usage:
 
 ![App usage](/app-usage.gif?raw=true)
+
+- The video shows a new user recently created, buying with Reais, the amount of 100 Britas and show the statement had been recorded after finish the operation.
+
+- The currency is from de current day or, if you access from the weekend, show the currency of friday.
+
+- CI/CD Link: [https://travis-ci.org/isaiasneto/desafio-stone-isaias](https://travis-ci.org/isaiasneto/desafio-stone-isaias)
+
+- Last tests passed: [https://travis-ci.org/isaiasneto/desafio-stone-isaias/jobs/597442663#L218]https://travis-ci.org/isaiasneto/desafio-stone-isaias/jobs/597442663#L218
+
+- Main tests file [https://github.com/isaiasneto/desafio-stone-isaias/blob/dev/src/components/Operations.test.jsx]https://github.com/isaiasneto/desafio-stone-isaias/blob/dev/src/components/Operations.test.jsx
