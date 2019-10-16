@@ -12,9 +12,9 @@ You can sign in with a test user **testuser@test.com** and password **testuserte
 
 ![App usage](/app-usage.gif?raw=true)
 
-- The video shows a new user recently created, buying with Reais, the amount of 100 Britas and show the statement had been recorded after finish the operation.
+- The video shows a user recently created, buying with Reais, the amount of 100 Britas and shows the statement registred after finished the operation.
 
-- The currency is from de current day or, if you access from the weekend, show the currency of friday.
+- The currencies are from de current day or, if you access from the weekend, shows the currencies of friday.
 
 - CI/CD Link: [https://travis-ci.org/isaiasneto/desafio-stone-isaias](https://travis-ci.org/isaiasneto/desafio-stone-isaias)
 
