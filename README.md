@@ -2,7 +2,7 @@
 
 ### Isaias Neto
 
-Open the application: [https://desafio-stone-isaias.firebaseapp.com](https://desafio-stone-isaias.firebaseapp.com).
+Open the application: [https://desafio-stone-isaias.firebaseapp.com](https://desafio-stone-isaias.firebaseapp.com)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -18,6 +18,6 @@ You can sign in with a test user **testuser@test.com** and password **testuserte
 
 - CI/CD Link: [https://travis-ci.org/isaiasneto/desafio-stone-isaias](https://travis-ci.org/isaiasneto/desafio-stone-isaias)
 
-- Last tests passed: [https://travis-ci.org/isaiasneto/desafio-stone-isaias/jobs/597442663#L218]https://travis-ci.org/isaiasneto/desafio-stone-isaias/jobs/597442663#L218
+- Last tests passed: [https://travis-ci.org/isaiasneto/desafio-stone-isaias/jobs/597442663#L218](https://travis-ci.org/isaiasneto/desafio-stone-isaias/jobs/597442663#L218)
 
-- Main tests file [https://github.com/isaiasneto/desafio-stone-isaias/blob/dev/src/components/Operations.test.jsx]https://github.com/isaiasneto/desafio-stone-isaias/blob/dev/src/components/Operations.test.jsx
+- Main tests file [https://github.com/isaiasneto/desafio-stone-isaias/blob/dev/src/components/Operations.test.jsx](https://github.com/isaiasneto/desafio-stone-isaias/blob/dev/src/components/Operations.test.jsx)
