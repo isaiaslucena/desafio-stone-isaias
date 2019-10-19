@@ -12,7 +12,7 @@ You can sign in with a test user **testuser@test.com** and password **testuserte
 
 ![App usage](/app-usage.gif?raw=true)
 
-- The video shows a user recently created, buying with Reais, the amount of 100 Britas and shows the statement registred after finished the operation.
+- The video shows a user recently created, buying with Reais, the amount of 100 Britas and shows the statement registered after finished the operation.
 
 - The currencies are from de current day or, if you access from the weekend, shows the currencies of friday.
 
